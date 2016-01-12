@@ -4,8 +4,6 @@ COLLATE utf8_unicode_ci;
 
 USE CineBase;
 
-
-
 CREATE TABLE IF NOT EXISTS t_Country (
 	ID SERIAL PRIMARY KEY,
     Country VARCHAR(150) NOT NULL,
