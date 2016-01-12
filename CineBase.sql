@@ -1,117 +1,114 @@
-CREATE DATABASE IF NOT EXISTS CineBase 
+CREATE DATABASE IF NOT EXISTS KinoDaten 
 CHARACTER SET utf8
 COLLATE utf8_unicode_ci;
 
-USE CineBase;
+USE KinoDaten;
 
-
-/*test*/
-
-
-
-CREATE TABLE IF NOT EXISTS t_Country (
+CREATE TABLE IF NOT EXISTS t_Land (
 	ID SERIAL PRIMARY KEY,
-    Country VARCHAR(150) NOT NULL,
-    UNIQUE uk_Country (Country)
+    Land VARCHAR(150) NOT NULL,
+    UNIQUE uk_Land (Land)
 );
-CREATE TABLE IF NOT EXISTS t_City (
+
+CREATE TABLE IF NOT EXISTS t_Stadt (
 	ID SERIAL PRIMARY KEY,
-	Postalcode VARCHAR(10) NOT NULL,
-    City VARCHAR (250) NOT NULL,
-    CountryID BIGINT UNSIGNED NOT NULL,
-	CONSTRAINT fk_CityCountry FOREIGN KEY (CountryID) REFERENCES t_Country(ID),
-    UNIQUE uk_CityPostCountry (Postalcode, City, CountryID)
+	PLZ VARCHAR(10) NOT NULL,
+    Ort VARCHAR (250) NOT NULL,
+    LandID BIGINT UNSIGNED NOT NULL,
+	CONSTRAINT fk_StadtLand FOREIGN KEY (LandID) REFERENCES t_Land(ID),
+    UNIQUE uk_StadtPLZLand (PLZ, Ort, LandID)
 );
-CREATE TABLE IF NOT EXISTS t_Address (
+
+CREATE TABLE IF NOT EXISTS t_Adresse (
 	ID SERIAL PRIMARY KEY,
-    Street VARCHAR(250) NOT NULL,
+    Strasse VARCHAR(250) NOT NULL,
     StrNr SMALLINT UNSIGNED NOT NULL,
-    CityID BIGINT UNSIGNED NOT NULL,
-    CONSTRAINT fk_AddressCity FOREIGN KEY (CityID) REFERENCES t_City(ID)
-);
-CREATE TABLE IF NOT EXISTS t_Cinema(
-	ID SERIAL PRIMARY KEY,
-    CineName VARCHAR (100) NOT NULL,
-    AddressID BIGINT UNSIGNED NOT NULL,
-    Tel VARCHAR(25) NOT NULL,
-    CONSTRAINT fk_CineAddress FOREIGN KEY (AddressID) REFERENCES t_Address(ID),
-    UNIQUE uk_CinemaAddress (AddressID)
+    StadtID BIGINT UNSIGNED NOT NULL,
+    CONSTRAINT fk_Adresse FOREIGN KEY (StadtID) REFERENCES t_Stadt(ID)
 );
 
-CREATE TABLE IF NOT EXISTS t_Hall(
+CREATE TABLE IF NOT EXISTS t_Kino(
 	ID SERIAL PRIMARY KEY,
-    CinemaID BIGINT UNSIGNED NOT NULL,
-    HallName VARCHAR(50) NOT NULL,
-    CONSTRAINT fk_CinemaHall FOREIGN KEY (CinemaID) REFERENCES t_Cinema(ID),
-    UNIQUE uk_CinemaHall (HallName, CinemaID)
+    Kinoname VARCHAR (100) NOT NULL,
+    Strasse VARCHAR(250) NOT NULL,
+    PLZ VARCHAR(10) NOT NULL,
+    Stadt VARCHAR (250) NOT NULL,
+    Land VARCHAR(150) NOT NULL,
+    TelNr VARCHAR(25) NOT NULL
+    /*CONSTRAINT fk_KinoAdresse FOREIGN KEY (AdresseID) REFERENCES t_Adresse(ID),*/
+    /*UNIQUE uk_CinemaAddress (AddressID)*/
 );
 
-CREATE TABLE IF NOT EXISTS t_Seat(
+CREATE TABLE IF NOT EXISTS t_Saal(
 	ID SERIAL PRIMARY KEY,
-    HallID BIGINT UNSIGNED NOT NULL,
-    Rownumber INT UNSIGNED NOT NULL,
-    CellNumber INT UNSIGNED NOT NULL,
-    CONSTRAINT fk_HallSeat FOREIGN KEY (HallID) REFERENCES t_Hall(ID),
-    UNIQUE uk_HallRowCell (Rownumber, CellNumber, HallID)
+    KinoID BIGINT UNSIGNED NOT NULL,
+    Saalname VARCHAR(50) NOT NULL,
+    CONSTRAINT fk_KinoSaal FOREIGN KEY (KinoID) REFERENCES t_Kino(ID),
+    UNIQUE uk_Saal (Saalname, KinoID)
 );
 
-CREATE TABLE IF NOT EXISTS t_Movie (
+CREATE TABLE IF NOT EXISTS t_Platz(
 	ID SERIAL PRIMARY KEY,
-    Name VARCHAR(150) NOT NULL,
-    Description TEXT,
-    Duration DATETIME NOT NULL,
-    Price Decimal(3,2) NOT NULL
+    SaalID BIGINT UNSIGNED NOT NULL,
+    Reihe INT UNSIGNED NOT NULL,
+    Sitz INT UNSIGNED NOT NULL,
+    CONSTRAINT fk_SitzSaal FOREIGN KEY (SaalID) REFERENCES t_Saal(ID),
+    UNIQUE uk_Sitz (Reihe, Sitz, SaalID)
 );
 
-CREATE TABLE IF NOT EXISTS t_MoviePerformence (
+CREATE TABLE IF NOT EXISTS t_Film (
 	ID SERIAL PRIMARY KEY,
-    MovieID BIGINT UNSIGNED NOT NULL,
-    HallID BIGINT UNSIGNED NOT NULL,
-    StartTime DATETIME NOT NULL,
-    CONSTRAINT fk_PerfMovie FOREIGN KEY (MovieID) REFERENCES t_Movie(ID),
-    CONSTRAINT fk_PerfHall FOREIGN KEY (HallID) REFERENCES t_Hall(ID),
-    UNIQUE uk_MoviePerformence (MovieID, HallID, StartTime)
+    Titel VARCHAR(150) NOT NULL,
+    Beschreibung TEXT,
+    Dauer DATETIME NOT NULL,
+    Preis Decimal(3,2) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS t_BaseAcount (
+CREATE TABLE IF NOT EXISTS t_FilmAuffuerung (
 	ID SERIAL PRIMARY KEY,
-    Username VARCHAR (30) NOT NULL,
-    Pass VARCHAR(500) NOT NULL,
-    FirstName VARCHAR (100) NOT NULL,
-    LastName VARCHAR (100) NOT NULL,
-    UNIQUE uk_Username (Username)
+    FilmID BIGINT UNSIGNED NOT NULL,
+    SaalID BIGINT UNSIGNED NOT NULL,
+    Uhrzeit DATETIME NOT NULL,
+    CONSTRAINT fk_FilmAuff FOREIGN KEY (FilmID) REFERENCES t_Film(ID),
+    CONSTRAINT fk_AuffSaal FOREIGN KEY (SaalID) REFERENCES t_Saal(ID),
+    UNIQUE uk_FilmAuffuerung (FilmID, SaalID, Uhrzeit)
 );
 
-CREATE TABLE IF NOT EXISTS t_User (
+CREATE TABLE IF NOT EXISTS t_Kunde (
 	ID BIGINT UNSIGNED PRIMARY KEY,
-    MailAddress VARCHAR(100) NOT NULL,
-    AddressID BIGINT UNSIGNED NOT NULL,
-    CONSTRAINT fk_UserAccount FOREIGN KEY (ID) REFERENCES t_BaseAcount(ID),
-    CONSTRAINT fk_UserAddress FOREIGN KEY (AddressID) REFERENCES t_Address(ID),
-    UNIQUE uk_UserAddress (AddressID),
-    UNIQUE uk_MailAddt_Countryress (MailAddress)
+    Benutzername VARCHAR (30) NOT NULL,
+    Passwort VARCHAR(500) NOT NULL,
+    Vorname VARCHAR (100) NOT NULL,
+    Nachname VARCHAR (100) NOT NULL,
+    AdresseID BIGINT UNSIGNED NOT NULL,
+    MailAdresse VARCHAR(100) NOT NULL,
+    CONSTRAINT fk_KundeAdresse FOREIGN KEY (AdresseID) REFERENCES t_Adresse(ID),
+    UNIQUE uk_UserAddress (AdresseID),
+    UNIQUE uk_Username (Benutzername),
+    UNIQUE uk_MailAdresse (MailAdresse)
 );
 
-CREATE TABLE IF NOT EXISTS t_Manager (
+CREATE TABLE IF NOT EXISTS t_Typ (
 	ID BIGINT UNSIGNED UNIQUE NOT NULL PRIMARY KEY,
-    CONSTRAINT fk_ManagerAccount FOREIGN KEY (ID) REFERENCES t_BaseAcount(ID)
+    Typ VARCHAR (30) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS t_Cashier (
+CREATE TABLE IF NOT EXISTS t_Angestellte (
 	ID BIGINT UNSIGNED UNIQUE NOT NULL PRIMARY KEY,
-    CinemaID BIGINT UNSIGNED NOT NULL,
-    CONSTRAINT fk_CashierAccount FOREIGN KEY (ID) REFERENCES t_BaseAcount(ID),
-    CONSTRAINT fk_CashierCinema FOREIGN KEY (CinemaID) REFERENCES t_Cinema(ID)
+    Benutzername VARCHAR (30) NOT NULL,
+    Passwort VARCHAR(500) NOT NULL,
+    TypID BIGINT UNSIGNED NOT NULL,
+    CONSTRAINT fk_AngestelltenTyp FOREIGN KEY (TypID) REFERENCES t_Typ(ID)
 );
 
 CREATE TABLE IF NOT EXISTS t_Ticket (
 	ID SERIAL PRIMARY KEY,
-    PerformenceID BIGINT UNSIGNED NOT NULL,
-    SeatID BIGINT UNSIGNED NOT NULL,
-    SoldDate Date,
-    UserID BIGINT UNSIGNED NOT NULL,
-    CONSTRAINT fk_PerfTicket FOREIGN KEY (PerformenceID) REFERENCES t_MoviePerformence(ID),
-    CONSTRAINT fk_TicketSeat FOREIGN KEY (SeatID) REFERENCES t_Seat(ID),
-    CONSTRAINT fk_TicketUser FOREIGN KEY (UserID) REFERENCES t_User(ID),
-    UNIQUE uk_Ticket (PerformenceID, SeatID)
+    AuffuerungID BIGINT UNSIGNED NOT NULL,
+    PlatzID BIGINT UNSIGNED NOT NULL,
+    Verkaufsdatum Date,
+    KundeID BIGINT UNSIGNED NOT NULL,
+    CONSTRAINT fk_AuffTicket FOREIGN KEY (AuffuerungID) REFERENCES t_FilmAuffuerung(ID),
+    CONSTRAINT fk_TicketPlatz FOREIGN KEY (PlatzID) REFERENCES t_Platz(ID),
+    CONSTRAINT fk_TicketKunde FOREIGN KEY (KundeID) REFERENCES t_Kunde(ID),
+    UNIQUE uk_Ticket (AuffuerungID, PlatzID)
 );
