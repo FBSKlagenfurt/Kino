@@ -117,7 +117,7 @@
             Justastreet 1<br />
             A-9500 Villach<br />
             +43 4242 12345 Fax: DW-99<br />
-            office@x-it.at<br />
+            office@starmovies.test<br />
         </div>
       </div>
     </div>
