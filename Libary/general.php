@@ -27,6 +27,7 @@
     function isLoggedIn(){
         if(((!(!isset($_SESSION["LOGINUSER"]) || $_SESSION["LOGINUSER"] == NULL || !isset($_SESSION["LOGINTYP"]) || $_SESSION["LOGINTYP"] == NULL || !isset($_SESSION["LOGINTIME"]) || $_SESSION["LOGINTIME"] == NULL)) && ($_SESSION["LOGINTIME"] > strtotime("- 30 minutes"))))
         {
+            $_SESSION["LOGINTIME"] = strtotime("now");
             return true;
         }
         else

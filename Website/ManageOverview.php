@@ -3,6 +3,12 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
     $IsLoggedID = isLoggedIn();
+    if(!$IsLoggedID)
+    {
+        session_start();
+        $_SESSION["ReturnUrl"] = "/ManageOverview.php";
+        redirect("/login.php");
+    }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -26,7 +32,7 @@
                 </div>
                 <div class="clear"></div>
                 <div class="mainmenu">
-                    <div class="selmenuentry">
+                    <div class="menuentry">
                         <a href="/">Start</a>
                     </div>
                     <div class="menuentry">
@@ -39,40 +45,49 @@
                         <a href="/">Kontakt</a>
                     </div>
                     <?php if($IsLoggedID) echo ' 
-                    <div class="menuentry">
+                    <div class="selmenuentry">
                         <a href="/ManageOverview.php">Verwaltung</a>
                     </div>' ?>
                 </div>
          </div>
       </div>
     </div>
-    
-
     <div class="page">
         <div class="main">
-            
-  <div class="Teaser">
-   <div class="col1">
-     <br /><br /><br />
-     <div style="font-weight:800;color: #1acdc9;font-size: 2.8em;padding-bottom:20px;">STAR MOVIES</div>
-     <div style="font-weight:300;color:#68696b;font-size:2.3em;">Watch the star, watch us.</div>
-     <br />
-     <div style="font-family: Signika;font-style:normal;font-size: 1.25em;line-height:1.7em;">
-       Besuchen Sie Star Movies und erleben Sie Kino <br />
-       auf einen anderen Dimension.<br />
-       <!--Jetzt neu-->Bald verfügbar: Tickets bis zu einer Woche vor Reservieren!<br />
-       <a href="/"  style="font-size: 0.8em;">&nbsp;&gt; MEHR INFO</a>
-     </div>
-   </div>
-   <div class="col2">
-     <br /><br />
-     <img src="/Images/movie.png" width="400px" height="260px" alt="Movie Image"  />
-   </div>
-  </div>   
-  <div class="clear"></div>
-  <br />
-  
-
+            <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Kinos</h1>
+            <table class="table" style="margin-left:auto;margin-right:auto;">
+                <thead>
+                    <th>
+                        Kinoname
+                    </th>
+                    <th>
+                        Tel Nr.
+                    </th>
+                    <th>
+                        Straße
+                    </th>
+                    <th>
+                        PLZ
+                    </th>
+                    <th>
+                        Ort
+                    </th>
+                </thead>
+                <tbody>
+                    <?php
+                         require_once("getSqlConnection.php");
+                         $sqlcon = getSqlCon();
+                         $x = $sqlcon->prepare("SELECT * FROM v_Kino");
+                         $x->execute();
+                         $x->bind_result($ID, $Kinoname, $TelNr, $Strasse, $PLZ, $Ort);
+                         while($x->fetch())
+                         {
+                             echo "<tr><td>$Kinoname</td><td>$TelNr</td><td>$Strasse</td><td>$PLZ</td><td>$Ort</td></tr>";
+                         }
+                         $sqlcon->close();
+                    ?>
+                </tbody>
+            </table>
         </div>
         <div class="clear">
         </div>
@@ -102,7 +117,7 @@
             Justastreet 1<br />
             A-9500 Villach<br />
             +43 4242 12345 Fax: DW-99<br />
-            office@starmovies.test<br />
+            office@x-it.at<br />
         </div>
       </div>
     </div>

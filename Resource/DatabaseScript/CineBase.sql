@@ -92,12 +92,15 @@ CREATE TABLE IF NOT EXISTS t_Ticket (
 );
 
 CREATE OR REPLACE VIEW v_Account AS 
-	SELECT CONVERT(BenutzerName USING latin1) COLLATE latin1_general_cs AS Username, Passwort AS Password FROM t_User 
+	SELECT CONVERT(t_User.BenutzerName USING latin1) COLLATE latin1_general_cs AS Username, t_User.Passwort AS Password, t_Typ.Typ AS Typ FROM t_User 
     INNER JOIN t_Typ 
     ON t_User.TypID = t_Typ.ID;
-    
+
 CREATE OR REPLACE VIEW v_KinoOrt AS
 	SELECT t_Kino.ID, t_Kino.Kinoname, t_Stadt.Ort FROM t_Kino INNER JOIN t_Stadt ON t_Kino.StadtID = t_Stadt.ID;
+    
+CREATE OR REPLACE VIEW v_Kino AS
+	SELECT t_Kino.ID AS ID, t_Kino.Kinoname AS Kinoname, t_Kino.TelNr AS TelNr, t_Kino.Strasse AS Strasse, t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort FROM t_Kino INNER JOIN t_Stadt ON t_Kino.StadtID = t_Stadt.ID;
     
 /*CREATE OR REPLACE VIEW v_FilmAuffuerung AS
 	SELECT ID t_FilmAuffuerung*/
