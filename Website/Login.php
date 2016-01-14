@@ -35,33 +35,33 @@
 ?>
 <!DOCTYPE HTML>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-    <form action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-        <table>
-            <tbody>
-                <tr>
-                    <td>Benutzername:</td>
-                    <td>
-                        <input name="Username" type="text" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Passwort:</td>
-                    <td>
-                        <input name="Passwort" type="Password" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="submit" />  
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
-</body>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Insert title here</title>
+    </head>
+    <body>
+        <form action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Benutzername:</td>
+                        <td>
+                            <input name="Username" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Passwort:</td>
+                        <td>
+                            <input name="Passwort" type="Password" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" />  
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
 </html>
