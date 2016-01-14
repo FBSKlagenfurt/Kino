@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS t_Kino(
     Kinoname VARCHAR (100) NOT NULL,
     Strasse VARCHAR(250) NOT NULL,
     PLZ VARCHAR(10) NOT NULL,
-    Ort VARCHAR (250) NOT NULL,
+    Stadt VARCHAR (250) NOT NULL,
     Land VARCHAR(150) NOT NULL,
     TelNr VARCHAR(25) NOT NULL
     /*CONSTRAINT fk_KinoAdresse FOREIGN KEY (AdresseID) REFERENCES t_Adresse(ID),*/
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS t_FilmAuffuerung (
 );
 
 CREATE TABLE IF NOT EXISTS t_Kunde (
-    ID SERIAL PRIMARY KEY,
+    ID BIGINT UNSIGNED PRIMARY KEY,
     Benutzername VARCHAR (30) NOT NULL,
     Passwort VARCHAR(500) NOT NULL,
     Vorname VARCHAR (100) NOT NULL,
@@ -89,12 +89,12 @@ CREATE TABLE IF NOT EXISTS t_Kunde (
 );
 
 CREATE TABLE IF NOT EXISTS t_Typ (
-    ID SERIAL PRIMARY KEY,
+    ID BIGINT UNSIGNED UNIQUE NOT NULL PRIMARY KEY,
     Typ VARCHAR (30) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS t_Angestellte (
-    ID SERIAL PRIMARY KEY,
+    ID BIGINT UNSIGNED UNIQUE NOT NULL PRIMARY KEY,
     Benutzername VARCHAR (30) NOT NULL,
     Passwort VARCHAR(500) NOT NULL,
     TypID BIGINT UNSIGNED NOT NULL,
@@ -112,17 +112,3 @@ CREATE TABLE IF NOT EXISTS t_Ticket (
     CONSTRAINT fk_TicketKunde FOREIGN KEY (KundeID) REFERENCES t_Kunde(ID),
     UNIQUE uk_Ticket (AuffuerungID, PlatzID)
 );
-
-CREATE OR REPLACE VIEW v_Angestellte AS 
-	SELECT t_Angestellte.ID , t_Angestellte.Benutzername, t_Typ.Typ, t_Angestellte.Passwort
-    FROM t_Angestellte INNER JOIN t_Typ 
-    ON t_Angestellte.TypID = t_Typ.ID;
-
-CREATE OR REPLACE VIEW v_Account AS 
-	SELECT 'Kunde' AS Typ, CONVERT(BenutzerName USING latin1) COLLATE latin1_general_cs AS Username, Passwort AS Password FROM t_Kunde 
-    UNION 
-    SELECT Typ AS Typ, CONVERT(BenutzerName USING latin1) COLLATE latin1_general_cs AS Username, Passwort AS Password FROM v_Angestellte;
-    
-CREATE OR REPLACE VIEW v_KinoOrt AS
-	SELECT ID, Kinoname, Ort FROM t_Kino
-    
