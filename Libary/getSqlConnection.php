@@ -11,10 +11,11 @@ function getSqlCon($host = "", $port = "", $socket = "", $user = "", $password =
     }
     $con = new mysqli($host, $user, $password, $dbname, $port, $socket)
 	or die ('Could not connect to the database server' . mysqli_connect_error());
-    if(!$con->set_charset("utf8")){
+    if(!$con->set_charset("utf8"))
+    {
         echo "Fehler beim Laden von UTF-8" . $mysqli->error;
     }
     //$con->close();
-    return $con;
-}
+        return $con;
+    }
 ?>
