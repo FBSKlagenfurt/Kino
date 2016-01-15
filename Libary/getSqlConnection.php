@@ -15,6 +15,8 @@ function getSqlCon($host = "", $port = "", $socket = "", $user = "", $password =
         echo "Fehler beim Laden von UTF-8" . $mysqli->error;
     }
     //$con->close();
+
     return $con;
+
 }
 ?>
