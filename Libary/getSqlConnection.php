@@ -17,6 +17,5 @@ function getSqlCon($host = "", $port = "", $socket = "", $user = "", $password =
     //$con->close();
 
     return $con;
-
 }
 ?>
