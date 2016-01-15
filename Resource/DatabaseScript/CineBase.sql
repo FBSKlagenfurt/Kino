@@ -101,6 +101,18 @@ CREATE OR REPLACE VIEW v_KinoOrt AS
     
 CREATE OR REPLACE VIEW v_Kino AS
 	SELECT t_Kino.ID AS ID, t_Kino.Kinoname AS Kinoname, t_Kino.TelNr AS TelNr, t_Kino.Strasse AS Strasse, t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort FROM t_Kino INNER JOIN t_Stadt ON t_Kino.StadtID = t_Stadt.ID;
-    
+
 /*CREATE OR REPLACE VIEW v_FilmAuffuerung AS
 	SELECT ID t_FilmAuffuerung*/
+    
+DROP PROCEDURE IF EXISTS p_InsertKino;
+DELIMITER $$
+CREATE PROCEDURE p_InsertKino(IN cid BIGINT UNSIGNED, IN kn VARCHAR(100) , IN str VARCHAR(250), IN city BIGINT UNSIGNED, IN tel VARCHAR(25))
+BEGIN
+	if cid <= 0 THEN 
+        INSERT INTO t_Kino(Kinoname, Strasse, StadtID, TelNr) values (kn, str,city, tel);
+	ELSE
+		UPDATE t_Kino SET Kinoname=kn, Strasse=str, StadtID=city, TelNr=tel WHERE ID=cid;
+	END IF;
+END $$
+DELIMITER ;

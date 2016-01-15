@@ -3,12 +3,6 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
     $IsLoggedID = isLoggedIn();
-    if(!$IsLoggedID)
-    {
-        session_start();
-        $_SESSION["ReturnUrl"] = "/ManageOverview.php";
-        redirect("/login.php");
-    }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -52,42 +46,45 @@
          </div>
       </div>
     </div>
+    
+
     <div class="page">
         <div class="main">
-            <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Kinos<button onclick="location.href='/editCinema.php?id=$ID'">Hinzufügen</button></h1>
-            <table class="table" style="margin-left:auto;margin-right:auto;">
-                <thead>
-                    <th>
-                        Kinoname
-                    </th>
-                    <th>
-                        Tel Nr.
-                    </th>
-                    <th>
-                        Straße
-                    </th>
-                    <th>
-                        PLZ
-                    </th>
-                    <th>
-                        Ort
-                    </th>
-                    <th>
-                    </th>
-                </thead>
+            <form id="cinemaForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <table>
                 <tbody>
-                    <?php
-                         require_once("getSqlConnection.php");
-                         $sqlcon = getSqlCon();
-                         $x = $sqlcon->prepare("SELECT * FROM v_Kino");
-                         $x->execute();
-                         $x->bind_result($ID, $Kinoname, $TelNr, $Strasse, $PLZ, $Ort);
-                         while($x->fetch())
-                         {
-                             echo "<tr><td>$Kinoname</td><td>$TelNr</td><td>$Strasse</td><td>$PLZ</td><td>$Ort</td><td><button onclick=\"location.href='/editCinema.php?id=$ID'\">Bearbeiten</button></td></tr>";
-                         }
-                         $sqlcon->close();
-                    ?>
+                    <tr>
+                        <td>Kinoname:</td>
+                        <td>
+                            <input name="Kinoname" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Straße:</td>
+                        <td>
+                            <input name="Str" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PLZ</td>
+                        <td>
+                            <input name="PLZ" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ort</td>
+                        <td>
+                            <input name="Ort" type="text" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <a style='color:#000;height:30px;padding-left:23px; display: block;background-repeat: no-repeat; background-size:100px 30px; background-image:url("/images/button_bg.png");background-repeat: no-repeat;' href="javascript:document.getElementById('cinemaForm').submit()">
+                                Speichern
+                            </a> 
+                            <input type="submit" style="visibility:hidden;width:0;height:0;"/>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
