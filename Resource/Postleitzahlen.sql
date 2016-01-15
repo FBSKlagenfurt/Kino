@@ -1,4 +1,5 @@
-(1010,'Wien',1),
+INSERT INTO t_Stadt(PLZ, Ort, LandID)
+VALUES (1010,'Wien',1),
 (1020,'Wien',1),
 (1030,'Wien',1),
 (1040,'Wien',1),
@@ -18969,4 +18970,4 @@
 (5580,'Tamsweg',1),
 (5580,'Tamsweg',1),
 (5580,'Tamsweg',1),
-(5580,'Tamsweg',1),
+(5580,'Tamsweg',1)
