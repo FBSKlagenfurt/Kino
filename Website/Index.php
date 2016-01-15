@@ -33,7 +33,7 @@
                         <a href="/">Filme</a>
                     </div>
                     <div class="menuentry">
-                        <a href="/">Kinos</a>
+                        <a href="kinos.php">Kinos</a>
                     </div>
                     <div class="menuentry">
                         <a href="/">Kontakt</a>
