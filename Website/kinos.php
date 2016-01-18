@@ -67,8 +67,7 @@
                     <th>
                         Ort
                     </th>
-                    <th>
-                    </th>
+                
                 </thead>
                 <tbody>
                     <?php 
