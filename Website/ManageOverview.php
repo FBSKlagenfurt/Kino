@@ -54,7 +54,7 @@
     </div>
     <div class="page">
         <div class="main">
-            <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Kinos<button onclick="location.href='/editCinema.php?id=$ID'">Hinzufügen</button></h1>
+            <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Kinos<button onclick="location.href='/editCinema.php'">Hinzufügen</button></h1>
             <table class="table" style="margin-left:auto;margin-right:auto;">
                 <thead>
                     <th>
