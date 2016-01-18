@@ -90,29 +90,3 @@ CREATE TABLE IF NOT EXISTS t_Ticket (
     CONSTRAINT fk_TicketKunde FOREIGN KEY (KundeID) REFERENCES t_User(ID),
     UNIQUE uk_Ticket (AuffuerungID, Reihe, Platz)
 );
-
-CREATE OR REPLACE VIEW v_Account AS 
-	SELECT CONVERT(t_User.BenutzerName USING latin1) COLLATE latin1_general_cs AS Username, t_User.Passwort AS Password, t_Typ.Typ AS Typ FROM t_User 
-    INNER JOIN t_Typ 
-    ON t_User.TypID = t_Typ.ID;
-
-CREATE OR REPLACE VIEW v_KinoOrt AS
-	SELECT t_Kino.ID, t_Kino.Kinoname, t_Stadt.Ort FROM t_Kino INNER JOIN t_Stadt ON t_Kino.StadtID = t_Stadt.ID;
-    
-CREATE OR REPLACE VIEW v_Kino AS
-	SELECT t_Kino.ID AS ID, t_Kino.Kinoname AS Kinoname, t_Kino.TelNr AS TelNr, t_Kino.Strasse AS Strasse, t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort FROM t_Kino INNER JOIN t_Stadt ON t_Kino.StadtID = t_Stadt.ID;
-
-/*CREATE OR REPLACE VIEW v_FilmAuffuerung AS
-	SELECT ID t_FilmAuffuerung*/
-    
-DROP PROCEDURE IF EXISTS p_InsertKino;
-DELIMITER $$
-CREATE PROCEDURE p_InsertKino(IN cid BIGINT UNSIGNED, IN kn VARCHAR(100) , IN str VARCHAR(250), IN city BIGINT UNSIGNED, IN tel VARCHAR(25))
-BEGIN
-	if cid <= 0 THEN 
-        INSERT INTO t_Kino(Kinoname, Strasse, StadtID, TelNr) values (kn, str,city, tel);
-	ELSE
-		UPDATE t_Kino SET Kinoname=kn, Strasse=str, StadtID=city, TelNr=tel WHERE ID=cid;
-	END IF;
-END $$
-DELIMITER ;

@@ -1,5 +1,7 @@
-﻿INSERT INTO t_Stadt(PLZ, Ort, LandID)
-VALUES (1010,'Wien',1),
+USE KinoDaten;
+INSERT INTO t_Land (Land) VALUES ('Österreich');
+INSERT INTO t_Typ (Typ) VALUES ('Manager');
+INSERT INTO t_Stadt(PLZ, Ort, LandID) VALUES (1010,'Wien',1),
 (1020,'Wien',1),
 (1030,'Wien',1),
 (1040,'Wien',1),
@@ -4779,5 +4781,4 @@ VALUES (1010,'Wien',1),
 (5573,'Weißpriach',1),
 (5574,'Göriach',1),
 (5575,'Lessach',1),
-(5580,'Tamsweg',1),
-(5580,'Tamsweg',1)
+(5580,'Tamsweg',1);

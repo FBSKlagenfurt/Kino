@@ -26,14 +26,14 @@
                 </div>
                 <div class="clear"></div>
                 <div class="mainmenu">
-                    <div class="selmenuentry">
+                    <div class="menuentry">
                         <a href="/">Start</a>
                     </div>
-                    <div class="menuentry">
-                        <a href="filme.php">Filme</a>
+                    <div class="selmenuentry">
+                        <a href="MovieOverview.php">Filme</a>
                     </div>
                     <div class="menuentry">
-                        <a href="kinos.php">Kinos</a>
+                        <a href="CinemaOverview.php">Kinos</a>
                     </div>
                     <div class="menuentry">
                         <a href="/">Kontakt</a>
@@ -49,9 +49,7 @@
     
 
     <div class="page">
-        <div class="main">
-            
-
+    	<div class="main">
   
 
         </div>
@@ -80,10 +78,12 @@
         <div class="col3">
             <b>KONTAKT</b><br /><br />
             Star Movies GmbH<br />
-            Justastreet 1<br />
+            <a href="maps:address=Hauptplatz 1, A-9500 Villach, Austira">Justastreet 1<br />
             A-9500 Villach<br />
-            +43 4242 12345 Fax: DW-99<br />
-            office@starmovies.test<br />
+            Austria<br />
+            </a>
+            <a href="tel:+43424212345">+43 4242 12345</a> Fax: <a href="fax:+4342421234599">DW-99</a><br />
+            <a href="mailto:office@starmovies.test">office@starmovies.test</a><br />
         </div>
       </div>
     </div>
