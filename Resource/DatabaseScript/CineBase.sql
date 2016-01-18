@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS t_Film (
     ID SERIAL PRIMARY KEY,
     Titel VARCHAR(150) NOT NULL,
     Beschreibung TEXT,
-    Dauer DATETIME NOT NULL,
+    Dauer INT UNSIGNED NOT NULL,
     Preis Decimal(3,2) NOT NULL
 );
 
