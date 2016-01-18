@@ -65,10 +65,10 @@
                         <a href="/">Start</a>
                     </div>
                     <div class="menuentry">
-                        <a href="MovieOverview.php">Filme</a>
+                        <a href="/">Filme</a>
                     </div>
                     <div class="menuentry">
-                        <a href="CinemaOverview.php">Kinos</a>
+                        <a href="/">Kinos</a>
                     </div>
                     <div class="menuentry">
                         <a href="/">Kontakt</a>
@@ -105,7 +105,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <a style='color:#000;height:30px;padding-left:28px; display: block;background-size:100px 30px; background-image:url("/images/button_bg.png");background-repeat: no-repeat;' href="javascript:document.getElementById('LoginForm').submit()">
+                            <a style='color:#000;height:30px;padding-left:28px; display: block;background-repeat: no-repeat; background-size:100px 30px; background-image:url("/images/button_bg.png");background-repeat: no-repeat;' href="javascript:document.getElementById('LoginForm').submit()">
                                 Login
                             </a> 
                             <input type="submit" style="visibility:hidden;width:0;height:0;"/>
@@ -149,12 +149,10 @@
         <div class="col3">
             <b>KONTAKT</b><br /><br />
             Star Movies GmbH<br />
-            <a href="maps:address=Hauptplatz 1, A-9500 Villach, Austira">Justastreet 1<br />
+            Justastreet 1<br />
             A-9500 Villach<br />
-            Austria<br />
-            </a>
-            <a href="tel:+43424212345">+43 4242 12345</a> Fax: <a href="fax:+4342421234599">DW-99</a><br />
-            <a href="mailto:office@starmovies.test">office@starmovies.test</a><br />
+            +43 4242 12345 Fax: DW-99<br />
+            office@starmovies.test<br />
         </div>
       </div>
     </div>

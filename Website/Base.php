@@ -11,10 +11,28 @@
     	<?php
             set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary"); 
             require_once("general.php");
-            
+            /*
             require_once("hash.php");
             require_once("getSqlConnection.php");
             $sqlcon = getSqlCon();
+            $x = $sqlcon->prepare("INSERT INTO `t_Typ` (`Typ` ) VALUES (?)"); 
+            $myval1 = 'Manager';
+            $x->bind_param("s", $myval1);
+            $x->execute();
+            $x = $sqlcon->prepare("INSERT INTO `t_Land` (`Land` ) VALUES (?)"); 
+            $myval1 = 'Österreich';
+            $x->bind_param("s", $myval1);
+            $x->execute();
+            $x = $sqlcon->prepare("INSERT INTO `t_Land` (`Land` ) VALUES (?)"); 
+            $myval1 = 'Österreich';
+            $x->bind_param("s", $myval1);
+            $x->execute();
+            $x = $sqlcon->prepare("INSERT INTO `t_Stadt` (`PLZ`, `Ort`, `LandID` ) VALUES (?, ?, ?)"); 
+            $myval1 = '9500';
+            $myval2 = 'Villach';
+            $myval3 = 1;
+            $x->bind_param("ssi", $myval1, $myval2, $myval3);
+            $x->execute();
             $x = $sqlcon->prepare("INSERT INTO `t_User` (`Benutzername`, `Passwort`, `Vorname`, `Nachname`, `MailAdresse`, `Strasse`, `StadtID`, `TypID` ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             $myval1 = 'Admin';
             $myval2 = HashPassword('UseTheForce2016!');
@@ -27,7 +45,7 @@
             $x->bind_param("ssssssii", $myval1, $myval2, $myval3, $myval4, $myval5, $myval6, $myval7, $myval8);
             $x->execute();
             $sqlcon->close();
-            
+            */
             echo "<h1>Willkommen zu Star Movies</h1>";
             if(!isLoggedIn())
             {
