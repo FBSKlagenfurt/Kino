@@ -49,8 +49,42 @@
     
 
     <div class="page">
-        <div class="main">
-            
+    	<div class="main">
+             <table class="table" style="margin-left:auto;margin-right:auto;">
+                <thead>
+                    <th>
+                        Kinoname
+                    </th>
+                    <th>
+                        Tel Nr.
+                    </th>
+                    <th>
+                        Straße
+                    </th>
+                    <th>
+                        PLZ
+                    </th>
+                    <th>
+                        Ort
+                    </th>
+                    <th>
+                    </th>
+                </thead>
+                <tbody>
+                    <?php
+					     require_once("../Libary/getSqlConnection.php");
+					     $sqlcon = getSqlCon();
+                         $x = $sqlcon->prepare("SELECT * FROM v_Kino");
+                         $x->execute();
+                         $x->bind_result($ID, $Kinoname, $TelNr, $Strasse, $PLZ, $Ort);
+                         while($x->fetch())
+                         {
+                             echo "<tr><td>$Kinoname</td><td>$TelNr</td><td>$Strasse</td><td>$PLZ</td><td>$Ort</td></tr>";
+                         }
+                         $sqlcon->close();
+					?>
+                </tbody>
+            </table>
 
   
 
