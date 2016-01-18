@@ -95,8 +95,6 @@
          </div>
       </div>
     </div>
-    
-
     <div class="page">
         <div class="main">
             <form id="cinemaForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
