@@ -94,7 +94,7 @@
             <a href="/">Trailer</a><br />
             <br />
             <b><a href="/Impressum.aspx">IMPRESSUM</a></b><br /><br />
-            <b><a href="/AGB.pdf" target="_blank">AGB</a></b><br />
+            <b><a href="../Images/AGB.pdf" target="_blank">AGB</a></b><br />
         </div>
         <div class="col3">
             <b>KONTAKT</b><br /><br />
