@@ -71,7 +71,8 @@
                     </th>
                 </thead>
                 <tbody>
-                    <?php
+                    <?php 
+                    
 					     require_once("../Libary/getSqlConnection.php");
 					     $sqlcon = getSqlCon();
                          $x = $sqlcon->prepare("SELECT * FROM v_Kino");
