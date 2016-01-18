@@ -133,15 +133,10 @@
                     </tr>
                     <tr>
                         <td style="min-width:120px;">
-                            <a style='font-size:15px; color:#000;height:30px;padding-left:19px; padding-left:15px; display: block;background-size:100px 30px; background-image:url("/images/button_bg.png");background-repeat: no-repeat;' href="javascript:document.getElementById('cinemaForm').submit()">
-                                Speichern
-                            </a> 
-                            <input type="submit" style="visibility:hidden;width:0;height:0;"/>
+                            <input class="submitbutton" type="submit" value="Speichern"/>
                         </td>
                         <td>
-                            <a style='font-size:15px; color:#000;height:30px;padding-left:19px; display: block;background-size:100px 30px; background-image:url("/images/button_bg.png");background-repeat: no-repeat;' href="/ManageOverview.php">
-                                Abbrechen
-                            </a>
+                            <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/ManageOverview.php'" />
                         </td>
                     </tr>
                 </tbody>

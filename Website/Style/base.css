@@ -401,6 +401,10 @@ div.accountInfo
 .submitbutton
 {
     border-radius: 25px;
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border:0;
     background: rgb(135,224,253); 
     background: -moz-linear-gradient(top,  rgba(135,224,253,1) 0%, rgba(83,203,241,1) 40%, rgba(5,171,224,1) 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(top,  rgba(135,224,253,1) 0%,rgba(83,203,241,1) 40%,rgba(5,171,224,1) 100%); /* Chrome10-25,Safari5.1-6 */

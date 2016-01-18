@@ -30,10 +30,10 @@
                         <a href="/">Start</a>
                     </div>
                     <div class="menuentry">
-                        <a href="/filme.php">Filme</a>
+                        <a href="MovieOverview.php">Filme</a>
                     </div>
                     <div class="menuentry">
-                        <a href="/kinos.php">Kinos</a>
+                        <a href="CinemaOverview.php">Kinos</a>
                     </div>
                     <div class="menuentry">
                         <a href="/">Kontakt</a>

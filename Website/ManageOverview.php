@@ -84,7 +84,7 @@
                          $x->bind_result($ID, $Kinoname, $TelNr, $Strasse, $PLZ, $Ort);
                          while($x->fetch())
                          {
-                             echo "<tr><td>$Kinoname</td><td>$TelNr</td><td>$Strasse</td><td>$PLZ</td><td>$Ort</td><td><button onclick=\"location.href='/editCinema.php?id=$ID'\">Bearbeiten</button></td></tr>";
+                             echo "<tr><td>$Kinoname</td><td>$TelNr</td><td>$Strasse</td><td>$PLZ</td><td>$Ort</td><td><button onclick=\"location.href='/editCinema.php?id=$ID'\">Bearbeiten</button><button onclick=\"location.href='/editCinema.php?delid=$ID'\">Löschen</button></td></tr>";
                          }
                          $sqlcon->close();
                     ?>
