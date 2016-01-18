@@ -98,37 +98,37 @@
     <div class="page">
         <div class="main">
             <form id="cinemaForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-            <input type="hidden" name="cineid" value="<?PHP echo $_GET['id'] ?>">
+            <input type="hidden" name="cineid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
             <table>
                 <tbody>
                     <tr>
                         <td>Kinoname:</td>
                         <td>
-                            <input name="Kinoname" type="text" value="<?php echo $Kinoname ?>"/>
+                            <input name="Kinoname" type="text" value="<?php if(isset($_GET['id'])) echo $Kinoname ?>"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Tel:</td>
                         <td>
-                            <input name="Tel" type="text" value="<?php echo $TelNr ?>"/>
+                            <input name="Tel" type="text" value="<?php if(isset($_GET['id'])) echo $TelNr ?>"/>
                         </td>
                     </tr>
                     <tr>
                         <td>Straße:</td>
                         <td>
-                            <input name="Str" type="text" value="<?php echo $Strasse ?>" />
+                            <input name="Str" type="text" value="<?php if(isset($_GET['id'])) echo $Strasse ?>" />
                         </td>
                     </tr>
                     <tr>
                         <td>PLZ:</td>
                         <td>
-                            <input name="PLZ" type="text" value="<?php echo $PLZ ?>" />
+                            <input name="PLZ" type="text" value="<?php if(isset($_GET['id'])) echo $PLZ ?>" />
                         </td>
                     </tr>
                     <tr>
                         <td>Ort:</td>
                         <td>
-                            <input name="Ort" type="text" value="<?php echo $Ort ?>" />
+                            <input name="Ort" type="text" value="<?php if(isset($_GET['id'])) echo $Ort ?>" />
                         </td>
                     </tr>
                     <tr>
