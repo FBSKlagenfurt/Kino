@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS t_Film (
     Titel VARCHAR(150) NOT NULL,
     Beschreibung TEXT,
     Dauer INT UNSIGNED NOT NULL,
-    Preis Decimal(3,2) NOT NULL
+    Preis Decimal(5,2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS t_FilmAuffuerung (
