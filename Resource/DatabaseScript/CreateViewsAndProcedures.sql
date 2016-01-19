@@ -31,6 +31,8 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
 DROP PROCEDURE IF EXISTS p_DeleteCinema;
 DELIMITER $$
 CREATE PROCEDURE p_DeleteCinema(IN kid BIGINT UNSIGNED)
@@ -38,3 +40,31 @@ BEGIN
 	DELETE FROM KinoDaten.t_Kino WHERE ID = kid;
 END $$
 DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS p_ManipulateMovie;
+
+
+DELIMITER $$
+CREATE PROCEDURE p_ManipulateMovie(IN mid BIGINT UNSIGNED, IN mTitel VARCHAR(100) , IN mDauer  int unsigned, IN mPreis  decimal (5,2) UNSIGNED, IN mBeschreibung text)
+BEGIN
+		if mid <= 0 THEN 
+			INSERT INTO t_Film(Titel, Dauer, Preis, Beschreibung) values (mTitel, mDauer,mPreis, mBeschreibung);
+		ELSE
+			UPDATE t_Film SET Titel=mTitel, Dauer=mDauer, Preis=mPreis, Beschreibung=mBeschreibung WHERE ID=mid;
+	END IF;
+END $$
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS p_DeleteMovie;
+DELIMITER $$
+CREATE PROCEDURE p_DeleteMovie(IN fid BIGINT UNSIGNED)
+BEGIN
+	DELETE FROM KinoDaten.t_Film WHERE ID = fid;
+END $$
+DELIMITER ;
+
+
+

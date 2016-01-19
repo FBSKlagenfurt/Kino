@@ -105,6 +105,8 @@
                     <th>
                         Kurzbeschreibung
                     </th>
+                    <th>
+                    </th>
                 </thead>
                 <tbody>
                     <?php
@@ -112,10 +114,10 @@
                          $sqlcon = getSqlCon();
                          $x = $sqlcon->prepare("SELECT * FROM t_Film");
                          $x->execute();
-                         $x->bind_result($ID, $Titel, $Dauer, $Preis, $Beschreibung);
+                         $x->bind_result($ID, $Titel, $Beschreibung, $Dauer, $Preis);
                          while($x->fetch())
                          {
-                             echo "<tr><td>$Filmname</td><td>$Dauer</td><td>$Preis</td><td>$Beschreibung</td><td><button onclick=\"location.href='/editMovie.php?id=$ID'\">Bearbeiten</button></td></tr>";
+                             echo "<tr><td>$Titel</td><td>$Dauer</td><td>$Preis</td><td>$Beschreibung</td><td><button onclick=\"location.href='/editMovie.php?id=$ID'\">Bearbeiten</button><button onclick=\"location.href='/editMovie.php?delid=$ID'\">Löschen</button></td></tr>";
                          }
                          $sqlcon->close();
                     ?>
