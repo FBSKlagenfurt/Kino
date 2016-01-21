@@ -123,6 +123,51 @@
                     ?>
                 </tbody>
             </table>
+            <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Mitarbeiter<button onclick="location.href='/editEmployee.php'">Hinzufügen</button></h1>
+            <table class="table" style="margin-left:auto;margin-right:auto;">
+                <thead>
+                    <th>
+                        Benutzername
+                    </th>
+                    <th>
+                        Vorname
+                    </th>
+                    <th>
+                        Nachname
+                    </th>
+                    <th>
+                        E-Mail
+                    </th>
+                    <th>
+                        Strasse
+                    </th>
+                    <th>
+                        PLZ
+                    </th>
+                    <th>
+                        Ort
+                    </th>
+                    <th>
+                        Typ
+                    </th>
+                    <th>
+                    </th>   
+                </thead>
+                <tbody>
+                    <?php
+                         require_once("getSqlConnection.php");
+                         $sqlcon = getSqlCon();
+                         $x = $sqlcon->prepare("SELECT * FROM v_mitarbeiter");
+                         $x->execute();
+                         $x->bind_result($ID, $Benutzername, $Vorname, $EMail, $Nachname, $Strasse, $PLZ, $Ort, $Typ);
+                         while($x->fetch())
+                         {
+                             echo "<tr><td>$Benutzername</td><td>$Vorname</td><td>$Nachname</td><td>$EMail</td><td>$Strasse</td><td>$PLZ</td><td>$Ort</td><td>$Typ</td><td><button onclick=\"location.href='/editEmployee.php?id=$ID'\">Bearbeiten</button><button onclick=\"location.href='/editEmployee.php?delid=$ID'\">Löschen</button></td></tr>";
+                         }
+                         $sqlcon->close();
+                    ?>
+                </tbody>
+            </table>
         </div>
         <div class="clear">
         </div>
