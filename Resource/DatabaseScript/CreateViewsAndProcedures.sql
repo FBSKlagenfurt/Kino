@@ -12,7 +12,7 @@ CREATE OR REPLACE VIEW v_Kino AS
 	SELECT t_Kino.ID AS ID, t_Kino.Kinoname AS Kinoname, t_Kino.TelNr AS TelNr, t_Kino.Strasse AS Strasse, t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort FROM t_Kino INNER JOIN t_Stadt ON t_Kino.StadtID = t_Stadt.ID;
     
 CREATE OR REPLACE VIEW v_Mitarbeiter AS
-	SELECT t_User.ID AS ID, t_User.Benutzername AS BN, t_User.Vorname AS VN, t_User.Nachname AS NN, t_User.Strasse AS STR , t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort, t_Typ.Typ FROM t_User INNER JOIN t_Stadt ON t_User.StadtID = t_Stadt.ID INNER JOIN t_Typ ON t_User.TypID = t_Typ.ID WHERE t_User.TypID = 2;    
+	SELECT t_User.ID AS ID, t_User.Benutzername AS BN, t_User.Vorname AS VN, t_User.Nachname AS NN, t_User.Strasse AS STR , t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort, t_Typ.Typ FROM t_User INNER JOIN t_Stadt ON t_User.StadtID = t_Stadt.ID INNER JOIN t_Typ ON t_User.TypID = t_Typ.ID WHERE t_User.TypID = 2 OR t_User.TypID = 1;    
 
 /*CREATE OR REPLACE VIEW v_FilmAuffuerung AS
 	SELECT ID t_FilmAuffuerung*/
@@ -68,6 +68,34 @@ BEGIN
 	DELETE FROM KinoDaten.t_Film WHERE ID = fid;
 END $$
 DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS p_ManipulateUser;
+
+DELIMITER $$
+CREATE PROCEDURE p_ManipulateUser(IN uid BIGINT UNSIGNED, IN bn VARCHAR(100) , IN str VARCHAR(250), IN post VARCHAR(10), IN city VARCHAR(250), IN typ BIGINT unsigned, IN mail VARCHAR(250), IN vn VARCHAR(250),IN nn VARCHAR(250))
+BEGIN
+	DECLARE sid BIGINT UNSIGNED;
+	SELECT ID FROM t_Stadt WHERE t_Stadt.PLZ = post AND t_Stadt.Ort = city limit 1 INTO sid;
+    if(sid > 0) THEN
+		if uid <= 0 THEN 
+			INSERT INTO t_Kino(Kinoname, Strasse, StadtID, TelNr) values (kn, str,sid, tel);
+		ELSE
+			UPDATE t_Kino SET Kinoname=kn, Strasse=str, StadtID=sid, TelNr=tel WHERE ID=kid;
+		END IF;
+	END IF;
+END $$
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS p_DeleteUser;
+DELIMITER $$
+CREATE PROCEDURE p_DeleteUser(IN uid BIGINT UNSIGNED)
+BEGIN
+	DELETE FROM KinoDaten.t_User WHERE ID = uid;
+END $$
+DELIMITER ;
+
 
 
 
