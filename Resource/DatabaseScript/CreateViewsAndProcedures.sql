@@ -12,7 +12,7 @@ CREATE OR REPLACE VIEW v_Kino AS
 	SELECT t_Kino.ID AS ID, t_Kino.Kinoname AS Kinoname, t_Kino.TelNr AS TelNr, t_Kino.Strasse AS Strasse, t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort FROM t_Kino INNER JOIN t_Stadt ON t_Kino.StadtID = t_Stadt.ID;
     
 CREATE OR REPLACE VIEW v_Mitarbeiter AS
-	SELECT t_User.ID AS ID, t_User.Benutzername AS BN, t_User.Vorname AS VN, t_User.Nachname AS NN, t_User.Strasse AS STR , t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort FROM t_User INNER JOIN t_Stadt ON t_User.StadtID = t_Stadt.ID INNER JOIN t_Typ ON t_User.TypID = t_Typ.ID WHERE t_User.TypID = 2;    
+	SELECT t_User.ID AS ID, t_User.Benutzername AS BN, t_User.Vorname AS VN, t_User.Nachname AS NN, t_User.Strasse AS STR , t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort, t_Typ.Typ FROM t_User INNER JOIN t_Stadt ON t_User.StadtID = t_Stadt.ID INNER JOIN t_Typ ON t_User.TypID = t_Typ.ID WHERE t_User.TypID = 2;    
 
 /*CREATE OR REPLACE VIEW v_FilmAuffuerung AS
 	SELECT ID t_FilmAuffuerung*/
