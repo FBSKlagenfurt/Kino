@@ -70,7 +70,35 @@ END $$
 DELIMITER ;
 
 
+DROP PROCEDURE IF EXISTS p_ManipulateUser;
 
+DELIMITER $$
+CREATE PROCEDURE p_ManipulateUser(IN uid BIGINT UNSIGNED, IN bn VARCHAR(30) , IN str VARCHAR(250), IN post VARCHAR(10), IN city VARCHAR(250), IN tid BIGINT unsigned, IN mail VARCHAR(100), IN vn VARCHAR(100),IN nn VARCHAR(100), IN pass VARCHAR (500))
+BEGIN
+	DECLARE sid BIGINT UNSIGNED;
+	SELECT ID FROM t_Stadt WHERE t_Stadt.PLZ = post AND t_Stadt.Ort = city limit 1 INTO sid;
+    if(sid > 0) THEN
+		if uid <= 0 THEN 
+			INSERT INTO t_User(Benutzername, Passwort, StadtID, TypID, Vorname, Nachname, MailAdresse, Strasse) values (bn, pass,sid, tid, vn, nn, mail, str);
+		ELSE
+			IF(pass = '')
+				THEN UPDATE t_User SET Benutzername=bn, Strasse=str, StadtID=sid, TypID=tid, Vorname=vn, Nachname=nn, MailAdresse = mail WHERE ID=uid;
+			ELSE
+				UPDATE t_User SET Benutzername=bn, Strasse=str, StadtID=sid, TypID=tid, Vorname=vn, Nachname=nn, MailAdresse = mail, Passwort=pass WHERE ID=uid;
+			END IF;
+		END IF;
+	END IF;
+END $$
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS p_DeleteUser;
+DELIMITER $$
+CREATE PROCEDURE p_DeleteUser(IN uid BIGINT UNSIGNED)
+BEGIN
+	DELETE FROM KinoDaten.t_User WHERE ID = uid;
+END $$
+DELIMITER ;
 
 
 
