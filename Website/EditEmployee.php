@@ -166,7 +166,7 @@
                         <td>Typ:</td>
                         <td>
                             <?php
-                                 require_once("../Libary/getSqlConnection.php");
+                                 require_once("getSqlConnection.php");
                                  $sqlcon = getSqlCon();
                                  $x = $sqlcon->prepare("SELECT id, Typ FROM t_typ;");
                                  $x->execute();
