@@ -12,6 +12,7 @@
     else if(isset($_POST["Vorname"]) && isset($_POST["Nachname"]) && isset($_POST["Benutzername"]) && isset($_POST["E-Mail"]) && isset($_POST["Strasse"]) && isset($_POST["PLZ"]) && isset($_POST["Ort"]) && isset($_POST["Typ"]))
     {
         require_once("getSqlConnection.php");
+        require_once("hash.php");
         if(isset($_POST["mid"]))
             $myval = $_POST["mid"];
         else 
@@ -25,7 +26,7 @@
         $myval7 = $_POST["Ort"];
         $myval8 = $_POST["Typ"];
         if(isset($_POST["Passwort"]))
-            $myval9 = $_POST["Passwort"];
+            $myval9 =  HashPassword($_POST["Passwort"]);
         else
             $myval9 = '';
         require_once("getSqlConnection.php");
@@ -174,7 +175,11 @@
                                  echo "<select name='Typ'>";
                                  while($x->fetch())
                                  {
-                                      echo "<option value='".$id."'>".$Typ."</option>";   
+                                     if($_GET['id'])
+                                        $selected = 'selected';
+                                     else 
+                                        $selected = '';
+                                     echo "<option " . $selected ." value='".$id."'>".$Typ."</option>";   
 
                                 }
                                 echo "</select>";
