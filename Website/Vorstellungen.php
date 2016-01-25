@@ -3,12 +3,6 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
     $IsLoggedID = isLoggedIn();
-    if(!$IsLoggedID)
-    {
-        session_start();
-        $_SESSION["ReturnUrl"] = "/ManageOverview.php";
-        redirect("/login.php");
-    }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -32,32 +26,40 @@
                 </div>
                 <div class="clear"></div>
                 <div class="mainmenu">
-                    <div class="menuentry">
+                    <div class="selmenuentry">
                         <a href="/">Start</a>
                     </div>
                     <div class="menuentry">
-                        <a href="/">Filme</a>
+                        <a href="MovieOverview.php">Filme</a>
                     </div>
                     <div class="menuentry">
-                        <a href="/">Kinos</a>
+                        <a href="CinemaOverview.php">Kinos</a>
                     </div>
                     <div class="menuentry">
                         <a href="/">Kontakt</a>
                     </div>
                     <?php if($IsLoggedID) echo ' 
-                    <div class="selmenuentry">
+                    <div class="menuentry">
                         <a href="/ManageOverview.php">Verwaltung</a>
                     </div>' ?>
                 </div>
          </div>
       </div>
     </div>
+    
+
     <div class="page">
         <div class="main">
-            <button onclick="location.href='/Kinouebersicht.php'">Kinos</button>
-            <button onclick="location.href='/Mitarbeiter.php'">Mitarbeiter</button>
-            <button onclick="location.href='/Filmuebersicht.php'">Filme</button>
-            <button onclick="location.href='/Vorstellungen.php'">Vorstellungen</button>
+        
+
+
+
+
+            Hier kommt dein Code für die Vorstellungen hin!!
+
+
+
+
         </div>
         <div class="clear">
         </div>
