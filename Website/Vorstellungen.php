@@ -117,12 +117,16 @@
             </td>
         </tr>
 
-
+         <tr>
+            <td>Beginnt um: </td>
+            <td><input type="text" id="beginnZeit" /></td>
+        </tr>
 
 
         <tr>
             <td>Zeit von/bis</td>
         </tr>
+       
         <tr>
             <td style="min-width:120px;">
                 <input class="submitbutton" type="submit" value="Speichern"/>
