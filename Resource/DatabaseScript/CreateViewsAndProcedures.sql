@@ -76,6 +76,8 @@ END $$
 DELIMITER ;
 
 
+/*Prozeduren für die Benutzer*/
+
 DROP PROCEDURE IF EXISTS p_ManipulateUser;
 
 DELIMITER $$
@@ -107,5 +109,33 @@ END $$
 DELIMITER ;
 
 
+/*Prozduren für die Vorstellung*/
+
+DROP PROCEDURE IF EXISTS p_ManipulatePerformance;
+
+DELIMITER $$
+CREATE PROCEDURE p_ManipulatePerformance(IN vid BIGINT UNSIGNED, IN fid BIGINT UNSIGNED , IN sid BIGINT UNSIGNED, IN vorzeit Datetime)
+BEGIN
+	DECLARE vid BIGINT UNSIGNED;
+	SELECT ID FROM t_filmauffuerung WHERE t_Filme.ID = fid AND t_Saal.ID = sid;
+    if(fid > 0) THEN
+		if vid <= 0 THEN 
+			INSERT INTO t_FilmAuffuerung(FilmID, SaalID, AuffZeit) values (fid, sid, vorzeit);
+		ELSE
+			UPDATE t_filmauffuerung SET FilmID=fid, SaalID=sid,AuffZeit=vorzeit  WHERE ID=vid;
+		END IF;
+	END IF;
+END $$
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS p_DeletePerformance;
+
+DELIMITER $$
+CREATE PROCEDURE p_DeletePerformance(IN vid BIGINT UNSIGNED)
+BEGIN
+	DELETE FROM KinoDaten.t_filmauffuerung WHERE ID = vid;
+END $$
+DELIMITER ;
 
 
