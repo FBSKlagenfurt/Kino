@@ -1,6 +1,6 @@
 USE KinoDaten;
 INSERT INTO t_Land (Land) VALUES ('Österreich');
-INSERT INTO t_Typ (Typ) VALUES ('Manager');
+INSERT INTO t_Typ (Typ) VALUES ('Manager'), VALUES ('Kassier'), VALUES ('Customer');
 INSERT INTO t_Stadt(PLZ, Ort, LandID) VALUES (1010,'Wien',1),
 (1020,'Wien',1),
 (1030,'Wien',1),

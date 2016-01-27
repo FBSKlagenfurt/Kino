@@ -1,8 +1,8 @@
 <?php 
-   session_start();
+    session_start();
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
-    $IsLoggedID = isLoggedIn();
+    $IsLoggedID = isManagerLoggedIn();
     if(!$IsLoggedID)
     {
         session_start();
@@ -31,6 +31,7 @@
     }
     else if(isset($_GET["id"]))
     {
+        $cid = $_GET["id"];
         require_once("getSqlConnection.php");
         $sqlcon = getSqlCon();
         $x = $sqlcon->prepare("SELECT * FROM v_Kino WHERE ID = ?");
@@ -84,9 +85,6 @@
                     <div class="menuentry">
                         <a href="CinemaOverview.php">Kinos</a>
                     </div>
-                    <div class="menuentry">
-                        <a href="/">Kontakt</a>
-                    </div>
                     <?php if($IsLoggedID) echo ' 
                     <div class="selmenuentry">
                         <a href="/ManageOverview.php">Verwaltung</a>
@@ -136,11 +134,43 @@
                             <input class="submitbutton" type="submit" value="Speichern"/>
                         </td>
                         <td>
-                            <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/ManageOverview.php'" />
+                            <input class="submitbutton" type="button" value="Zurück" onclick="location.href='/ManageOverview.php'" />
                         </td>
                     </tr>
                 </tbody>
             </table>
+             <?php if(isset($_GET["id"])){ echo '
+             <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Säle in '. $Kinoname .'<button type="button"; onclick="location.href=\'/EditCinemahall.php?cid='. $cid .'\'">Hinzufügen</button></h1>
+            <table class="table" style="margin-left:auto;margin-right:auto;">
+                <thead>
+                    <th>
+                        Saalname
+                    </th>
+                    <th>
+                        Reihen
+                    </th>
+                    <th>
+                        Sitze/Reihe
+                    </th>
+                    <th>
+                    </th>
+                </thead>
+                <tbody>';
+                    
+                         require_once("getSqlConnection.php");
+                         $sqlcon = getSqlCon();
+                         $x = $sqlcon->prepare("SELECT ID, Saalname, Reihe, Sitze FROM t_Saal WHERE KinoID = ?");
+                         $x->bind_param("i", $_GET['id']);
+                         $x->execute();
+                         $x->bind_result($ID, $Saalname, $Row, $Seats);
+                         while($x->fetch())
+                         {
+                             echo "<tr><td>$Saalname</td><td>$Row</td><td>$Seats</td><td><button type=\"button\" onclick=\"location.href='/editCinemahall.php?cid=$cid&id=$ID'\">Bearbeiten</button><button type=\"button\" onclick=\"location.href='/editCinemahall.php?cid=$cid&delid=$ID'\">Löschen</button></td></tr>";
+                         }
+                         $sqlcon->close();
+                   
+                echo '</tbody>
+            </table>';} ?>
         </div>
         <div class="clear">
         </div>
@@ -171,7 +201,7 @@
             A-9500 Villach<br />
             Austria<br />
             </a>
-            <a href="tel:+43424212345">+43 4242 12345</a> Fax: <a href="fax:+4342421234599">DW-99</a><br />
+            <a href="tel:+43424212345">+43 4242 12345</a> <a href="fax:+4342421234599">Fax: DW-99</a><br />
             <a href="mailto:office@starmovies.test">office@starmovies.test</a><br />
         </div>
       </div>

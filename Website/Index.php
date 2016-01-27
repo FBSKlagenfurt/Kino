@@ -2,7 +2,8 @@
     session_start();
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
-    $IsLoggedID = isLoggedIn();
+    $IsLoggedID = isLoggedIn(false);
+    $IsManager = isManagerLoggedIn();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -35,10 +36,7 @@
                     <div class="menuentry">
                         <a href="CinemaOverview.php">Kinos</a>
                     </div>
-                    <div class="menuentry">
-                        <a href="/">Kontakt</a>
-                    </div>
-                    <?php if($IsLoggedID) echo ' 
+                    <?php if($IsManager) echo ' 
                     <div class="menuentry">
                         <a href="/ManageOverview.php">Verwaltung</a>
                     </div>' ?>
@@ -99,10 +97,12 @@
         <div class="col3">
             <b>KONTAKT</b><br /><br />
             Star Movies GmbH<br />
-            Justastreet 1<br />
+            <a href="maps:address=Hauptplatz 1, A-9500 Villach, Austria">Justastreet 1<br />
             A-9500 Villach<br />
-            +43 4242 12345 Fax: DW-99<br />
-            office@starmovies.test<br />
+            Austria<br />
+            </a>
+            <a href="tel:+43424212345">+43 4242 12345</a> <a href="fax:+4342421234599">Fax: DW-99</a><br />
+            <a href="mailto:office@starmovies.test">office@starmovies.test</a><br />
         </div>
       </div>
     </div>

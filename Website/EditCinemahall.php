@@ -1,55 +1,66 @@
 <?php 
-   session_start();
+    session_start();
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
     $IsLoggedID = isManagerLoggedIn();
+    if(isset($_GET["cid"]))
+    {
+        $cid = $_GET["cid"];
+    }
     if(!$IsLoggedID)
     {
-        session_start();
         $_SESSION["ReturnUrl"] = "/ManageOverview.php";
         redirect("/login.php");
     }
-    else if(isset($_POST["Titel"]) && isset($_POST["Dauer"]) && isset($_POST["Preis"]) && isset($_POST["Beschreibung"]))
+    else if(isset($_POST["Name"]) && isset($_POST["Rows"]) && isset($_POST["Seats"]))
     {
         require_once("getSqlConnection.php");
-        if(isset($_POST["filmid"]))
-            $myval = $_POST["filmid"];
-        else 
-            $myval = 0;
-        $myval1 = $_POST["Titel"];
-        $myval2 = $_POST["Dauer"];
-        $myval3 = $_POST["Preis"];
-        $myval4 = $_POST["Beschreibung"];
-        require_once("getSqlConnection.php");
-        $sqlcon = getSqlCon();
-        $x = $sqlcon->prepare("CALL p_ManipulateMovie (?, ?, ?, ?, ?)");
-        $x->bind_param("isids", $myval, $myval1, $myval2, $myval3, $myval4);
-        $result = $x->execute();
-        $sqlcon->close();
+        $myval = 0;
+        if(isset($_POST["HallID"]))
+            $myval = $_POST["HallID"];
+        if(isset($_POST["CineID"]))
+        {
+            $myval4 = $_POST["CineID"];
+        }
+        if(isset($myval) && $myval > 0 || isset($myval4) &&  $myval4 > 0)
+        {
+            $myval1 = $_POST["Name"];
+            $myval2 = $_POST["Rows"];
+            $myval3 = $_POST["Seats"];
+            $sqlcon = getSqlCon();
+            $x = $sqlcon->prepare("CALL p_ManipulateHall (?, ?, ?, ?, ?)");
+            $x->bind_param("isiii", $myval, $myval1, $myval2, $myval3, $myval4);
+            $result = $x->execute();
+            $sqlcon->close();
+        }
+        redirect('/EditCinema.php?id='. $myval4);
+    }
+    else if(!isset($cid) && isset($_GET["delid"]))
+    {    
         redirect('/ManageOverview.php');
     }
     else if(isset($_GET["id"]))
     {
         require_once("getSqlConnection.php");
         $sqlcon = getSqlCon();
-        $x = $sqlcon->prepare("SELECT * FROM t_Film WHERE ID = ?");
+        $x = $sqlcon->prepare("SELECT * FROM t_Saal WHERE ID = ?");
         $mypar = $_GET["id"];
         $x->bind_param("i", $mypar);
         $x->execute();
-        $x->bind_result($ID, $Titel, $Beschreibung, $Dauer, $Preis);
+        $x->bind_result($ID, $cid, $Name, $Rows, $Seats);
         $x->fetch();
         $sqlcon->close();
     }
-    else if(isset($_GET["delid"]))
+    else if(isset($_GET["delid"]) && isset($cid))
     {
         require_once("getSqlConnection.php");
         $delId = $_GET["delid"];
         $sqlcon = getSqlCon();
-        $x = $sqlcon->prepare("CALL p_DeleteMovie( ? )");
+        $x = $sqlcon->prepare("CALL p_DeleteHall( ? )");
         $x->bind_param("i", $delId);
         $result = $x->execute();
         $sqlcon->close();
-        redirect('/ManageOverview.php');
+        redirect('/EditCinema.php?id='. $cid);
     }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -94,31 +105,26 @@
     <div class="page">
         <div class="main">
             <form id="cinemaForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-            <input type="hidden" name="filmid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
+            <input type="hidden" name="HallID" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
+            <input type="hidden" name="CineID" value="<?PHP echo $cid; ?>">
             <table>
                 <tbody>
                     <tr>
-                        <td>Titel:</td>
+                        <td>Name:</td>
                         <td>
-                            <input name="Titel" type="text" value="<?php if(isset($_GET['id'])&&isset($Titel)) echo $Titel ?>"/>
+                            <input name="Name" type="text" value="<?php if(isset($_GET['id'])) echo $Name; ?>"/>
                         </td>
                     </tr>
                     <tr>
-                        <td>Dauer:</td>
+                        <td>Reihe:</td>
                         <td>
-                            <input name="Dauer" type="text" value="<?php if(isset($_GET['id'])&&isset($Dauer)) echo $Dauer ?>"/>
+                            <input name="Rows" type="text" value="<?php if(isset($_GET['id'])) echo $Rows; ?>"/>
                         </td>
                     </tr>
                     <tr>
-                        <td>Preis:</td>
+                        <td>Sitz:</td>
                         <td>
-                            <input name="Preis" type="text" value="<?php if(isset($_GET['id'])&&isset($Preis)) echo $Preis ?>" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Beschreibung:</td>
-                        <td>
-                            <textarea name="Beschreibung"><?php if(isset($_GET['id'])&&isset($Beschreibung)) echo $Beschreibung ?></textarea>
+                            <input name="Seats" type="text" value="<?php if(isset($_GET['id'])) echo $Seats; ?>" />
                         </td>
                     </tr>
                     <tr>
@@ -126,7 +132,7 @@
                             <input class="submitbutton" type="submit" value="Speichern"/>
                         </td>
                         <td>
-                            <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/ManageOverview.php'" />
+                            <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/EditCinema.php?id=<?php echo $cid ?>'" />
                         </td>
                     </tr>
                 </tbody>

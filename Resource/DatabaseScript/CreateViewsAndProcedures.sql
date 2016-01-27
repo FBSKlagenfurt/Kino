@@ -1,7 +1,7 @@
 USE KinoDaten;
 
 CREATE OR REPLACE VIEW v_Account AS 
-	SELECT CONVERT(t_User.BenutzerName USING latin1) COLLATE latin1_general_cs AS Username, t_User.Passwort AS Password, t_Typ.Typ AS Typ FROM t_User 
+	SELECT CONVERT(t_User.BenutzerName USING latin1) COLLATE latin1_general_cs AS Username, t_User.Passwort AS Password, t_Typ.ID AS Typ FROM t_User 
     INNER JOIN t_Typ 
     ON t_User.TypID = t_Typ.ID;
 
@@ -57,9 +57,7 @@ BEGIN
 			UPDATE t_Film SET Titel=mTitel, Dauer=mDauer, Preis=mPreis, Beschreibung=mBeschreibung WHERE ID=mid;
 	END IF;
 END $$
-
 DELIMITER ;
-
 
 DROP PROCEDURE IF EXISTS p_DeleteMovie;
 DELIMITER $$
@@ -71,7 +69,6 @@ DELIMITER ;
 
 
 DROP PROCEDURE IF EXISTS p_ManipulateUser;
-
 DELIMITER $$
 CREATE PROCEDURE p_ManipulateUser(IN uid BIGINT UNSIGNED, IN bn VARCHAR(30) , IN str VARCHAR(250), IN post VARCHAR(10), IN city VARCHAR(250), IN tid BIGINT unsigned, IN mail VARCHAR(100), IN vn VARCHAR(100),IN nn VARCHAR(100), IN pass VARCHAR (500))
 BEGIN
@@ -97,6 +94,26 @@ DELIMITER $$
 CREATE PROCEDURE p_DeleteUser(IN uid BIGINT UNSIGNED)
 BEGIN
 	DELETE FROM KinoDaten.t_User WHERE ID = uid;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS p_ManipulateHall;
+DELIMITER $$
+CREATE PROCEDURE p_ManipulateHall(IN hid BIGINT UNSIGNED, IN hn VARCHAR(100) , IN hr int unsigned, IN hs int UNSIGNED, IN cid int unsigned)
+BEGIN
+		if (hid <= 0 AND cid > 0) THEN 
+			INSERT INTO t_Saal(KinoID, Saalname, Reihe, Sitze) values (cid, hn,hr, hs);
+		ELSE
+			UPDATE t_Saal SET Saalname=hn, Reihe=hr, Sitze=hs WHERE ID=hid;
+	END IF;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS p_DeleteHall;
+DELIMITER $$
+CREATE PROCEDURE p_DeleteHall(IN hid BIGINT UNSIGNED)
+BEGIN
+	DELETE FROM KinoDaten.t_Saal WHERE ID = hid;
 END $$
 DELIMITER ;
 

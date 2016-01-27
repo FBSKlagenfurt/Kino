@@ -24,7 +24,8 @@
        header('Location: ' . $url, true, $statusCode);
        die();
     }
-    function isLoggedIn(){
+    
+    function isLoggedIn($ds = true){
         if(((!(!isset($_SESSION["LOGINUSER"]) || $_SESSION["LOGINUSER"] == NULL || !isset($_SESSION["LOGINTYP"]) || $_SESSION["LOGINTYP"] == NULL || !isset($_SESSION["LOGINTIME"]) || $_SESSION["LOGINTIME"] == NULL)) && ($_SESSION["LOGINTIME"] > strtotime("- 30 minutes"))))
         {
             $_SESSION["LOGINTIME"] = strtotime("now");
@@ -32,8 +33,20 @@
         }
         else
         {
-            session_destroy();
+            if($ds === true)
+                session_destroy();
             return false;   
         }
-    } 
+    }
+    function isManagerLoggedIn(){
+        if(isLoggedIn() && $_SESSION["LOGINTYP"] === 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;   
+        }
+    }
+     
 ?>

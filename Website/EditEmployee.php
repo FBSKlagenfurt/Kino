@@ -2,7 +2,7 @@
    session_start();
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
-    $IsLoggedID = isLoggedIn();
+    $IsLoggedID = isManagerLoggedIn();
     if(!$IsLoggedID)
     {
         session_start();
@@ -91,9 +91,6 @@
                     </div>
                     <div class="menuentry">
                         <a href="CinemaOverview.php">Kinos</a>
-                    </div>
-                    <div class="menuentry">
-                        <a href="/">Kontakt</a>
                     </div>
                     <?php if($IsLoggedID) echo ' 
                     <div class="selmenuentry">
@@ -227,7 +224,7 @@
             A-9500 Villach<br />
             Austria<br />
             </a>
-            <a href="tel:+43424212345">+43 4242 12345</a> Fax: <a href="fax:+4342421234599">DW-99</a><br />
+            <a href="tel:+43424212345">+43 4242 12345</a> <a href="fax:+4342421234599">Fax: DW-99</a><br />
             <a href="mailto:office@starmovies.test">office@starmovies.test</a><br />
         </div>
       </div>
