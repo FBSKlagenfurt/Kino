@@ -35,9 +35,6 @@
                     <div class="menuentry">
                         <a href="CinemaOverview.php">Kinos</a>
                     </div>
-                    <div class="menuentry">
-                        <a href="/">Kontakt</a>
-                    </div>
                     <?php if($IsLoggedID) echo ' 
                     <div class="menuentry">
                         <a href="/ManageOverview.php">Verwaltung</a>
