@@ -2,13 +2,7 @@
     session_start();
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
-    $IsLoggedID = isManagerLoggedIn();
-    if(!$IsLoggedID)
-    {
-        session_start();
-        $_SESSION["ReturnUrl"] = "/ManageOverview.php";
-        redirect("/login.php");
-    }
+    $IsLoggedID = isLoggedIn();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -32,29 +26,77 @@
                 </div>
                 <div class="clear"></div>
                 <div class="mainmenu">
-                    <div class="menuentry">
+                    <div class="selmenuentry">
                         <a href="/">Start</a>
                     </div>
                     <div class="menuentry">
-                        <a href="/">Filme</a>
+                        <a href="MovieOverview.php">Filme</a>
                     </div>
                     <div class="menuentry">
-                        <a href="/">Kinos</a>
+                        <a href="CinemaOverview.php">Kinos</a>
+                    </div>
+                    <div class="menuentry">
+                        <a href="/">Kontakt</a>
                     </div>
                     <?php if($IsLoggedID) echo ' 
-                    <div class="selmenuentry">
+                    <div class="menuentry">
                         <a href="/ManageOverview.php">Verwaltung</a>
                     </div>' ?>
                 </div>
          </div>
       </div>
     </div>
+    
+
     <div class="page">
         <div class="main">
-            <button onclick="location.href='/Kinouebersicht.php'">Kinos</button>
-            <button onclick="location.href='/Mitarbeiter.php'">Mitarbeiter</button>
-            <button onclick="location.href='/Filmuebersicht.php'">Filme</button>
-            <button onclick="location.href='/Vorstellungsuebersicht.php'">Vorstellungen</button>
+         <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Filme<button onclick="location.href='/editMovie.php?id=$ID'">Hinzufügen</button></h1>
+            <table class="table" style="margin-left:auto;margin-right:auto;">
+                <thead>
+                    <th>
+                        Filmtitel
+                    </th>
+                    <th>
+                        Dauer in Minuten
+                    </th>
+                    <th>
+                        Preis in €
+                    </th>
+                    <th>
+                        Kurzbeschreibung
+                    </th>
+                    <th>
+                    </th>
+                </thead>
+                <tbody>
+                    <?php
+                         require_once("getSqlConnection.php");
+                         $sqlcon = getSqlCon();
+                         $x = $sqlcon->prepare("SELECT * FROM t_Film");
+                         $x->execute();
+                         $x->bind_result($ID, $Titel, $Beschreibung, $Dauer, $Preis);
+                         while($x->fetch())
+                         {
+                             echo "<tr><td>$Titel</td><td>$Dauer</td><td>$Preis</td><td>$Beschreibung</td><td><button onclick=\"location.href='/editMovie.php?id=$ID'\">Bearbeiten</button><button onclick=\"location.href='/editMovie.php?delid=$ID'\">Löschen</button></td></tr>";
+                         }
+                         $sqlcon->close();
+                    ?>
+                </tbody>
+            </table>
+            
+  <div class="Teaser">
+   <div class="col1">
+    
+   </div>
+   <div class="col2">
+     <br /><br />
+     
+   </div>
+  </div>   
+  <div class="clear"></div>
+  <br />
+  
+
         </div>
         <div class="clear">
         </div>
@@ -81,12 +123,10 @@
         <div class="col3">
             <b>KONTAKT</b><br /><br />
             Star Movies GmbH<br />
-            <a href="maps:address=Hauptplatz 1, A-9500 Villach, Austria">Justastreet 1<br />
+            Justastreet 1<br />
             A-9500 Villach<br />
-            Austria<br />
-            </a>
-            <a href="tel:+43424212345">+43 4242 12345</a> <a href="fax:+4342421234599">Fax: DW-99</a><br />
-            <a href="mailto:office@starmovies.test">office@starmovies.test</a><br />
+            +43 4242 12345 Fax: DW-99<br />
+            office@starmovies.test<br />
         </div>
       </div>
     </div>
