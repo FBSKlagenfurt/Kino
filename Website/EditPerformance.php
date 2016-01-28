@@ -2,34 +2,36 @@
   session_start();
   set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
   require_once("general.php"); 
-  $IsLoggedID = isLoggedIn();
+    $IsLoggedID = isLoggedIn();
   if(!$IsLoggedID)
-    {
-        session_start();
-        $_SESSION["ReturnUrl"] = "/ManageOverview.php";
-        redirect("/login.php");
-    }
-    else if(isset($_POST["Saal"]) && isset($_POST["Film"]) && isset($_POST["Beginnt um"]))
-    {
-        require_once("getSqlConnection.php");
-        if(isset($_POST["vid"]))
-            $myval = $_POST["vid"];
-        else 
-            $myval = 0;
-        $myval1 = $_POST["Saal"];
-        $myval2 = $_POST["Film"];
-        $myval3 = $_POST["Beginnt um"];
-        require_once("getSqlConnection.php");
-        $sqlcon = getSqlCon();
-        $x = $sqlcon->prepare("CALL p_ManipulatePerformance (?, ?, ?, ?)");
-        $x->bind_param("issd", $myval, $myval1, $myval2, $myval3);
-        $result = $x->execute();
-        $sqlcon->close();
-        redirect('/ManageOverview.php');
+  {
+      session_start();
+      $_SESSION["ReturnUrl"] = "/ManageOverview.php";
+      redirect("/login.php");
+  }
+  else if(isset($_POST["VorID"]) && isset($_POST["Saal"]) && isset($_POST["Film"]) && isset($_POST["Beginn"]))
+  {
+    
+
+    require_once("getSqlConnection.php");
+    if(isset($_POST["vid"]))
+        $myval = $_POST["vid"];
+    else 
+      $myval = 0;
+      $myval1 = $_POST["Saal"];
+      $myval2 = $_POST["Film"];
+      $myval3 = $_POST["Beginn"];
+    require_once("getSqlConnection.php");
+      $sqlcon = getSqlCon();
+      $x = $sqlcon->prepare("CALL p_ManipulatePerformance (?, ?, ?, ?)");
+      $x->bind_param("issd", $myval, $myval1, $myval2, $myval3);
+      $result = $x->execute();
+      $sqlcon->close();
+      redirect('/ManageOverview.php');
     }
     else if(isset($_GET["id"]))
     {
-        require_once("getSqlConnection.php");
+      require_once("getSqlConnection.php");
         $sqlcon = getSqlCon();
         $x = $sqlcon->prepare("SELECT * FROM t_filmauffuerung WHERE ID = ?");
         $mypar = $_GET["id"];
@@ -38,20 +40,20 @@
         $x->bind_result($ID, $FilmID, $SaalID, $AuffZeit);
         $x->fetch();
         $sqlcon->close();
-    }
-    else if(isset($_GET["delid"]))
-    {
-        require_once("getSqlConnection.php");
-        $delId = $_GET["delid"];
-        $sqlcon = getSqlCon();
-        $x = $sqlcon->prepare("CALL p_DeletePerformance( ? )");
-        $x->bind_param("i", $delId);
-        $result = $x->execute();
-        $sqlcon->close();
-        redirect('/ManageOverview.php');
-    }
-
+  }
+  else if(isset($_GET["delid"]))
+  {
+    require_once("getSqlConnection.php");
+      $delId = $_GET["delid"];
+      $sqlcon = getSqlCon();
+      $x = $sqlcon->prepare("CALL p_DeletePerformance( ? )");
+      $x->bind_param("i", $delId);
+      $result = $x->execute();
+      $sqlcon->close();
+      redirect('/ManageOverview.php');
+  }
 ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
   <head>
@@ -98,12 +100,13 @@
       </div>
       <div class="page">
         <div class="main">
+          <form id="performanceForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
           <input type="hidden" name="vid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
             <table>
               <tbody>
                 <tr>
                   <td colspan="2">
-                    <h1 style="margin-left:auto;margin-right:auto;">Vorstellungen</h1>
+                    <h1 style="margin-left:auto;margin-right:auto;">Vorstellungen Bearbeiten</h1>
                   </td>
                 </tr>
                 <tr>
@@ -167,10 +170,10 @@
                   <td>
                     <?php
                       require_once("getSqlConnection.php");
-                        $sqlcon = getSqlCon();
-                        $x = $sqlcon->prepare("SELECT AuffZeit FROM t_filmauffuerung;");
+                        $sqlcon = getSqlCon();                        
+                        $x = $sqlcon->prepare("SELECT ID, AuffZeit FROM t_filmauffuerung where ID = ".$_GET["vid"].";");
                         $x->execute();
-                        $x->bind_result($Filmbeginn);
+                        $x->bind_result($ID,$Filmbeginn);
                       while($x->fetch())
                       {
                         echo "$Filmbeginn";
