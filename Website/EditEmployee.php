@@ -107,6 +107,11 @@
             <table>
                 <tbody>
                     <tr>
+                        <td colspan="2">
+                            <h1 style="margin-left:auto;margin-right:auto;">Mitarbeiter Bearbeiten</h1>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Benutzername:</td>
                         <td>
                             <input name="Benutzername" type="text" value="<?php if(isset($_GET['id'])&&isset($Benutzername)) echo $Benutzername ?>"/>

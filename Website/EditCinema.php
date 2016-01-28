@@ -100,6 +100,11 @@
             <table>
                 <tbody>
                     <tr>
+                        <td colspan="2">
+                            <h1 style="margin-left:auto;margin-right:auto;">Kino Bearbeiten</h1>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Kinoname:</td>
                         <td>
                             <input name="Kinoname" type="text" value="<?php if(isset($_GET['id'])) echo $Kinoname ?>"/>

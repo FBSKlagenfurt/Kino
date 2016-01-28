@@ -78,10 +78,10 @@
                          $sqlcon = getSqlCon();
                          $x = $sqlcon->prepare("SELECT * FROM v_filmauffuerung");
                          $x->execute();
-                         $x->bind_result($Kinoname, $Saalname, $Filmname, $Dauer, $Filmbeginndat, $Filmbeginn);
+                         $x->bind_result($Kinoname, $Saalname, $Filmname, $Dauer, $Filmbeginndat, $Filmbeginn, $VorstellungsID);
                          while($x->fetch())
                          {
-                             echo "<tr><td>$Kinoname</td><td>$Saalname</td><td>$Filmname</td><td>$Dauer</td><td>$Filmbeginndat</td><td>$Filmbeginn</td><td><button onclick=\"location.href='/editPerformance.php'\">Bearbeiten</button><button onclick=\"location.href='/editPerformance.php'\">Löschen</button></td></tr>";
+                             echo "<tr><td>$Kinoname</td><td>$Saalname</td><td>$Filmname</td><td>$Dauer</td><td>$Filmbeginndat</td><td>$Filmbeginn</td><td><button onclick=\"location.href='/editPerformance.php?vid=".$VorstellungsID."'\">Bearbeiten</button><button onclick=\"location.href='/editPerformance.php'\">Löschen</button></td></tr>";
                          }
                          $sqlcon->close();
                     ?>

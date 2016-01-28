@@ -13,6 +13,18 @@ function init(){
 		}
 	});	
 
+	$.ajax({
+		type:"get",
+		dataType: "json",
+		url:"funktion.php",			
+		data: {				
+			FiNa:  $("#FiNa")[0].value
+		},
+		success: function(data){								
+			befuelleFilmdauer(data);
+		}
+	});	
+
 	$( "#KiNa" ).change(function() {		
 		$.ajax({
 			type:"get",
