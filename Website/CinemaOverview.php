@@ -48,7 +48,7 @@
 
     <div class="page">
         <div class="main">
-            
+           <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Kinos</h1> 
            <table class="table" style="margin-left:auto;margin-right:auto;">
                 <thead>
                     <th>
