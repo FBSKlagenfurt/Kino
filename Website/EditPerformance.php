@@ -9,20 +9,20 @@
         $_SESSION["ReturnUrl"] = "/ManageOverview.php";
         redirect("/login.php");
     }
-    else if(isset($_POST["Saal"]) && isset($_POST["Film"]) && isset($_POST["Beginnt um"]))
+    else if(isset($_POST["hid"]) && isset($_POST["Titel"]) && isset($_POST["BeginntUm"]))
     {
         require_once("getSqlConnection.php");
         if(isset($_POST["vid"]))
             $myval = $_POST["vid"];
         else 
             $myval = 0;
-        $myval1 = $_POST["Saal"];
-        $myval2 = $_POST["Film"];
-        $myval3 = $_POST["Beginnt um"];
+        $myval1 = $_POST["hid"];
+        $myval2 = $_POST["Titel"];
+        $myval3 = $_POST["BeginntUm"];
         require_once("getSqlConnection.php");
         $sqlcon = getSqlCon();
         $x = $sqlcon->prepare("CALL p_ManipulatePerformance (?, ?, ?, ?)");
-        $x->bind_param("issd", $myval, $myval1, $myval2, $myval3);
+        $x->bind_param("isss", $myval, $myval1, $myval2, $myval3);
         $result = $x->execute();
         $sqlcon->close();
         redirect('/ManageOverview.php');
@@ -93,109 +93,61 @@
       </div>
     </div>
     <div class="page">
-        <div class="main">
-            <table>
-    <tbody>
-        <tr>
-            <td colspan="2">
-                <h1 style="margin-left:auto;margin-right:auto;">Vorstellungen</h1>
-            </td>
-        </tr>
-        <tr>
-            <td>Kino:</td>
-            <td>
-                <?php
-                    require_once("getSqlConnection.php");
-                    $sqlcon = getSqlCon();
-                    $x = $sqlcon->prepare("SELECT id, Kinoname FROM t_Kino;");
-                    $x->execute();
-                    $x->bind_result($id,$Kinoname);
-                    echo "<select name='Kinoname' id='KiNa'>";
-                    while($x->fetch())
-                    {
-                     
-                        echo "<option value='".$id."'>".$Kinoname."</option>";   
-
-                    }
-                    echo "</select>";
-                    $sqlcon->close();  
-                ?>
-            </td>
-        </tr>
-        <tr>
-            <td>Saal:</td>
-            <td>                
-                   <?php
-                        echo "<select name='Saalname' id='Saalname'>";            
-                        echo "</select>";                                    
-                    ?>
-            </td>
-        </tr>
-        <tr>
-            <td>Film:</td>
-            <td>
-                <?php
-                    require_once("getSqlConnection.php");
-                    $sqlcon = getSqlCon();
-                    $x = $sqlcon->prepare("SELECT id, Titel FROM t_film;");
-                    $x->execute();
-                    $x->bind_result($id,$Titel);
-                    echo "<select name='Titel' id='FiNa'>";
-                    while($x->fetch())
-                    {
-                     
-                        echo "<option value='".$id."'>".$Titel."</option>";   
-
-                    }
-                    echo "</select>";
-                    $sqlcon->close();  
-                ?>
-            </td>
-        </tr>
-        <tr>
-            <td>Dauer:</td>
-            <td>                
-                    <?php
-                        echo "<output name='Dauer' id='Dauer'>";            
-                        echo "</output>";                                    
-                    ?>
-            </td>
-          </tr>
-
+      <div class="main">
+        <form id="performaceForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+          <input type="hidden" name="pid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
+          <input type="hidden" name="hid" value="<?PHP if(isset($_GET['hallid'])) echo $_GET['hallid'] ?>">
+          <table>
+            <tbody>
           <tr>
-            <td>Beginnt um:</td>
-            <td>
-              <?php
-                require_once("getSqlConnection.php");
-                    $sqlcon = getSqlCon();
-                    $x = $sqlcon->prepare("SELECT AuffZeit FROM t_filmauffuerung;");
-                    $x->execute();
-                    $x->bind_result($Filmbeginn);
-                while($x->fetch())
-                {
-                  echo "$Filmbeginn";
-                }
-               $sqlcon->close();
-              ?>
-            </td>
+              <td colspan="2">
+                  <h1 style="margin-left:auto;margin-right:auto;">Vorstellungen</h1>
+              </td>
           </tr>
+          
+          <tr>
+              <td>Film:</td>
+              <td>
+                  <?php
+                      require_once("getSqlConnection.php");
+                      $sqlcon = getSqlCon();
+                      $x = $sqlcon->prepare("SELECT id, Titel FROM t_film;");
+                      $x->execute();
+                      $x->bind_result($id,$Titel);
+                      echo "<select name='Titel' id='FiNa'>";
+                      while($x->fetch())
+                      {
+                       
+                          echo "<option value='".$id."'>".$Titel."</option>";   
+
+                      }
+                      echo "</select>";
+                      $sqlcon->close();  
+                  ?>
+              </td>
+          </tr>
+          
+
+            <tr>
+              <td>Beginnt um:</td>
+              <td>
+                <input type="text" id="BeginntUm" name="BeginntUm" value="<?php if(isset($_GET["id"])) echo $AuffZeit ?>"/>
+              </td>
+            </tr>
 
 
-        <tr>
-            <td>Endet um:</td>
-            <td><input type="text" id="endZeit" /></td>
-        </tr>
-       
-        <tr>
-            <td style="min-width:120px;">
-                <input class="submitbutton" type="submit" value="Speichern"/>
-            </td>
-            <td>
-                <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/Vorstellungsuebersicht.php'" />
-            </td>
-        </tr>
-    </tbody>
-</table>
+         
+          <tr>
+              <td style="min-width:120px;">
+                  <input class="submitbutton" type="submit" value="Speichern"/>
+              </td>
+              <td>
+                  <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/ManageOverview.php'" />
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</form>
         </div>
         <div class="clear">
         </div>
