@@ -18,7 +18,7 @@ CREATE OR REPLACE VIEW v_FilmAuffuerung AS
 	SELECT t_kino.Kinoname AS Kinoname, t_saal.Saalname AS Saalname, t_film.Titel AS Filmname, t_film.Dauer AS Dauer, DATE_FORMAT(t_FilmAuffuerung.AuffZeit, '%b %d %Y &h:%i') AS Filmbeginn FROM t_kino INNER JOIN t_saal ON t_kino.ID = t_saal.KinoID INNER JOIN t_FilmAuffuerung ON t_saal.ID = t_FilmAuffuerung.SaalID INNER JOIN t_film ON t_FilmAuffuerung.FilmID = t_film.ID; 
 /*noch nicht getestet*/
 	CREATE OR REPLACE VIEW v_FilmAuffuerung AS
-	SELECT t_kino.Kinoname AS Kinoname, t_saal.Saalname AS Saalname, t_film.Titel AS Filmname, t_film.Dauer AS Dauer, DATE_FORMAT(t_FilmAuffuerung.AuffZeit, '%d %b %Y') AS Filmbeginndat, DATE_FORMAT(t_FilmAuffuerung.AuffZeit, '%H:%i') AS Filmbeginn FROM t_kino INNER JOIN t_saal ON t_kino.ID = t_saal.KinoID INNER JOIN t_FilmAuffuerung ON t_saal.ID = t_FilmAuffuerung.SaalID INNER JOIN t_film ON t_FilmAuffuerung.FilmID = t_film.ID; 
+	SELECT t_kino.Kinoname AS Kinoname, t_saal.Saalname AS Saalname, t_film.Titel AS Filmname, t_film.Dauer AS Dauer, DATE_FORMAT(t_FilmAuffuerung.AuffZeit, '%d %b %Y') AS Filmbeginndat, DATE_FORMAT(t_FilmAuffuerung.AuffZeit, '%H:%i') AS Filmbeginn, t_filmauffuerung.ID AS VorstellungsID FROM t_kino INNER JOIN t_saal ON t_kino.ID = t_saal.KinoID INNER JOIN t_FilmAuffuerung ON t_saal.ID = t_FilmAuffuerung.SaalID INNER JOIN t_film ON t_FilmAuffuerung.FilmID = t_film.ID; 
 /*noch nicht getestet*/
 /*CREATE OR REPLACE VIEW v_FilmAuffuerung AS
 	SELECT t_FilmAuffuerung.ID AS AUFID, t_FilmAuffuerung.SaalID AS SaalID, t_FilmAuffuerung.FilmID AS FilmID, t_FilmAuffuerung.AuffZeit AS Wann FROM t_FilmAuffuerung;
