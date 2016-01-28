@@ -110,6 +110,11 @@
             <table>
                 <tbody>
                     <tr>
+                        <td colspan="2">
+                            <h1 style="margin-left:auto;margin-right:auto;">Saal Bearbeiten</h1>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Name:</td>
                         <td>
                             <input name="Name" type="text" value="<?php if(isset($_GET['id'])) echo $Name; ?>"/>
