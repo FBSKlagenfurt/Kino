@@ -2,7 +2,7 @@
     session_start();
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
-    $IsLoggedID = isLoggedIn();
+    $IsLoggedID = isManagerLoggedIn();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="clear"></div>
                 <div class="mainmenu">
-                    <div class="selmenuentry">
+                    <div class="menuentry">
                         <a href="/">Start</a>
                     </div>
                     <div class="menuentry">
@@ -35,11 +35,8 @@
                     <div class="menuentry">
                         <a href="CinemaOverview.php">Kinos</a>
                     </div>
-                    <div class="menuentry">
-                        <a href="/">Kontakt</a>
-                    </div>
                     <?php if($IsLoggedID) echo ' 
-                    <div class="menuentry">
+                    <div class="selmenuentry">
                         <a href="/ManageOverview.php">Verwaltung</a>
                     </div>' ?>
                 </div>
