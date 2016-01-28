@@ -191,7 +191,7 @@
                 <input class="submitbutton" type="submit" value="Speichern"/>
             </td>
             <td>
-                <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/ManageOverview.php'" />
+                <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/Vorstellungsuebersicht.php'" />
             </td>
         </tr>
     </tbody>
