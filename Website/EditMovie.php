@@ -98,6 +98,11 @@
             <table>
                 <tbody>
                     <tr>
+                        <td colspan="2">
+                            <h1 style="margin-left:auto;margin-right:auto;">Film Bearbeiten</h1>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Titel:</td>
                         <td>
                             <input name="Titel" type="text" value="<?php if(isset($_GET['id'])&&isset($Titel)) echo $Titel ?>"/>
