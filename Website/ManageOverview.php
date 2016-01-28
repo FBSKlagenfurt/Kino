@@ -54,7 +54,6 @@
             <button onclick="location.href='/Kinouebersicht.php'">Kinos</button>
             <button onclick="location.href='/Mitarbeiter.php'">Mitarbeiter</button>
             <button onclick="location.href='/Filmuebersicht.php'">Filme</button>
-            <button onclick="location.href='/Vorstellungsuebersicht.php'">Vorstellungen</button>
         </div>
         <div class="clear">
         </div>
