@@ -146,7 +146,7 @@
 
 
 
-            <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Vorstellungen<button onclick="location.href='/editPerformance.php'">Hinzufügen</button></h1>
+            <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Vorstellungen<button type="button" onclick="location.href='/editPerformance.php?hid=<?php echo $_GET['id'] ."&cid=". $cid ?>'">Hinzufügen</button></h1>
             <table class="table" style="margin-left:auto;margin-right:auto;">
                 <thead>
                     <th>
@@ -182,7 +182,7 @@
                          $x->bind_result($Kinoname, $Saalname, $Filmname, $Dauer, $Filmbeginndat, $Filmbeginn, $VorstellungsID);
                          while($x->fetch())
                          {
-                             echo "<tr><td>$Kinoname</td><td>$Saalname</td><td>$Filmname</td><td>$Dauer</td><td>$Filmbeginndat</td><td>$Filmbeginn</td><td><button type=\"button\" onclick=\"location.href='/editPerformance.php?id=".$VorstellungsID."'\">Bearbeiten</button><button type=\"button\" onclick=\"location.href='/editPerformance.php'\">Löschen</button></td></tr>";
+                             echo "<tr><td>$Kinoname</td><td>$Saalname</td><td>$Filmname</td><td>$Dauer</td><td>$Filmbeginndat</td><td>$Filmbeginn</td><td><button type=\"button\" onclick=\"location.href='/editPerformance.php?hid=". $_GET["id"] . "&cid=" . $cid ."&id=$VorstellungsID'\">Bearbeiten</button><button type=\"button\" onclick=\"location.href='/editPerformance.php?hid=". $_GET["id"]. "&cid=" . $cid ."&delid=$VorstellungsID'\">Löschen</button></td></tr>";
                          }
                          $sqlcon->close();
                     ?>

@@ -13,17 +13,10 @@ CREATE OR REPLACE VIEW v_Kino AS
     
 CREATE OR REPLACE VIEW v_Mitarbeiter AS
 	SELECT t_User.ID AS ID, t_User.Benutzername AS BN, t_User.Vorname AS VN, t_User.MailAdresse AS Mail, t_User.Nachname AS NN, t_User.Strasse AS STR , t_Stadt.PLZ AS PLZ, t_Stadt.Ort AS Ort, t_Typ.Typ FROM t_User INNER JOIN t_Stadt ON t_User.StadtID = t_Stadt.ID INNER JOIN t_Typ ON t_User.TypID = t_Typ.ID WHERE t_User.TypID = 2 OR t_User.TypID = 1;    
-/*
+
 CREATE OR REPLACE VIEW v_FilmAuffuerung AS
-	SELECT t_kino.Kinoname AS Kinoname, t_saal.Saalname AS Saalname, t_film.Titel AS Filmname, t_film.Dauer AS Dauer, DATE_FORMAT(t_FilmAuffuerung.AuffZeit, '%b %d %Y &h:%i') AS Filmbeginn FROM t_kino INNER JOIN t_saal ON t_kino.ID = t_saal.KinoID INNER JOIN t_FilmAuffuerung ON t_saal.ID = t_FilmAuffuerung.SaalID INNER JOIN t_film ON t_FilmAuffuerung.FilmID = t_film.ID; 
-*/
-/*noch nicht getestet*/
-	CREATE OR REPLACE VIEW v_FilmAuffuerung AS
 	SELECT t_kino.Kinoname AS Kinoname, t_saal.Saalname AS Saalname, t_film.Titel AS Filmname, t_film.Dauer AS Dauer, DATE_FORMAT(t_FilmAuffuerung.AuffZeit, '%d %b %Y') AS Filmbeginndat, DATE_FORMAT(t_FilmAuffuerung.AuffZeit, '%H:%i') AS Filmbeginn, t_filmauffuerung.ID AS VorstellungsID FROM t_kino INNER JOIN t_saal ON t_kino.ID = t_saal.KinoID INNER JOIN t_FilmAuffuerung ON t_saal.ID = t_FilmAuffuerung.SaalID INNER JOIN t_film ON t_FilmAuffuerung.FilmID = t_film.ID; 
-/*noch nicht getestet*/
-/*CREATE OR REPLACE VIEW v_FilmAuffuerung AS
-	SELECT t_FilmAuffuerung.ID AS AUFID, t_FilmAuffuerung.SaalID AS SaalID, t_FilmAuffuerung.FilmID AS FilmID, t_FilmAuffuerung.AuffZeit AS Wann FROM t_FilmAuffuerung;
-*/
+
 DROP PROCEDURE IF EXISTS p_ManipulateCinema;
 
 DELIMITER $$
@@ -110,10 +103,12 @@ DROP PROCEDURE IF EXISTS p_ManipulateHall;
 DELIMITER $$
 CREATE PROCEDURE p_ManipulateHall(IN hid BIGINT UNSIGNED, IN hn VARCHAR(100) , IN hr int unsigned, IN hs int UNSIGNED, IN cid int unsigned)
 BEGIN
-		if (hid <= 0 AND cid > 0) THEN 
+	IF (cid > 0) THEN
+		IF (hid <= 0) THEN 
 			INSERT INTO t_Saal(KinoID, Saalname, Reihe, Sitze) values (cid, hn,hr, hs);
 		ELSE
 			UPDATE t_Saal SET Saalname=hn, Reihe=hr, Sitze=hs WHERE ID=hid;
+		END IF;
 	END IF;
 END $$
 DELIMITER ;
@@ -134,13 +129,11 @@ DROP PROCEDURE IF EXISTS p_ManipulatePerformance;
 DELIMITER $$
 CREATE PROCEDURE p_ManipulatePerformance(IN vid BIGINT UNSIGNED, IN fid BIGINT UNSIGNED , IN sid BIGINT UNSIGNED, IN vorzeit Datetime)
 BEGIN
-	DECLARE vid BIGINT UNSIGNED;
-	SELECT ID FROM t_filmauffuerung WHERE t_Filme.ID = fid AND t_Saal.ID = sid;
-    if(fid > 0) THEN
-		if vid <= 0 THEN 
+	IF(fid > 0 AND sid > 0) THEN
+		IF(vid <= 0) THEN
 			INSERT INTO t_FilmAuffuerung(FilmID, SaalID, AuffZeit) values (fid, sid, vorzeit);
 		ELSE
-			UPDATE t_filmauffuerung SET FilmID=fid, SaalID=sid,AuffZeit=vorzeit  WHERE ID=vid;
+			UPDATE t_FilmAuffuerung SET FilmID=fid, SaalID=sid, AuffZeit=vorzeit WHERE ID=vid;
 		END IF;
 	END IF;
 END $$

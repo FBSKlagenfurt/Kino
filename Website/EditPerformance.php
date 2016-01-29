@@ -3,54 +3,66 @@
   set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
   require_once("general.php"); 
   $IsLoggedID = isManagerLoggedIn();
+  if(isset($_GET["hid"]))
+  {
+      $hid = $_GET["hid"];
+  }
+  if(isset($_GET["cid"]))
+  {
+      $cid = $_GET["cid"];
+  }
   if(!$IsLoggedID)
-    {
-        session_start();
-        $_SESSION["ReturnUrl"] = "/ManageOverview.php";
-        redirect("/login.php");
-    }
-    else if(isset($_POST["hid"]) && isset($_POST["Titel"]) && isset($_POST["BeginntUm"]))
-    {
-        require_once("getSqlConnection.php");
-        if(isset($_POST["vid"]))
-            $myval = $_POST["vid"];
-        else 
-            $myval = 0;
-        $myval1 = $_POST["hid"];
-        $myval2 = $_POST["Titel"];
-        $myval3 = $_POST["BeginntUm"];
-        require_once("getSqlConnection.php");
-        $sqlcon = getSqlCon();
-        $x = $sqlcon->prepare("CALL p_ManipulatePerformance (?, ?, ?, ?)");
-        $x->bind_param("isss", $myval, $myval1, $myval2, $myval3);
-        $result = $x->execute();
-        $sqlcon->close();
-        redirect('/ManageOverview.php');
-    }
-    else if(isset($_GET["id"]))
-    {
-        require_once("getSqlConnection.php");
-        $sqlcon = getSqlCon();
-        $x = $sqlcon->prepare("SELECT * FROM t_filmauffuerung WHERE ID = ?");
-        $mypar = $_GET["id"];
-        $x->bind_param("i", $mypar);
-        $x->execute();
-        $x->bind_result($ID, $FilmID, $SaalID, $AuffZeit);
-        $x->fetch();
-        $sqlcon->close();
-    }
-    else if(isset($_GET["delid"]))
-    {
-        require_once("getSqlConnection.php");
-        $delId = $_GET["delid"];
-        $sqlcon = getSqlCon();
-        $x = $sqlcon->prepare("CALL p_DeletePerformance( ? )");
-        $x->bind_param("i", $delId);
-        $result = $x->execute();
-        $sqlcon->close();
-        redirect('/ManageOverview.php');
-    }
-
+  {
+      session_start();
+      $_SESSION["ReturnUrl"] = "/ManageOverview.php";
+      redirect("/login.php");
+  }
+  else if(isset($_POST["hid"]) && isset($_POST["Titel"]) && isset($_POST["BeginntUm"]) && isset($_POST["cid"]))
+  {
+      require_once("getSqlConnection.php");
+      if(isset($_POST["pid"]))
+          $myval = $_POST["pid"];
+      else 
+          $myval = 0;
+      $hid = $_POST["hid"];
+      $myval1 = $_POST["Titel"];
+      $myval2 = $_POST["BeginntUm"];
+      $cid = $_POST["cid"];
+      require_once("getSqlConnection.php");
+      $sqlcon = getSqlCon();
+      $x = $sqlcon->prepare("CALL p_ManipulatePerformance (?, ?, ?, ?)");
+      $x->bind_param("iiis", $myval, $myval1, $hid, $myval2);
+      $result = $x->execute();
+      $sqlcon->close();
+      redirect("/EditCinemahall.php?cid=$cid&id=$hid");
+  }
+  else if(!isset($hid) && !isset($cid) && isset($_GET["delid"]))
+  {    
+      redirect('/ManageOverview.php');
+  }
+  else if(isset($_GET["id"]))
+  {
+      require_once("getSqlConnection.php");
+      $sqlcon = getSqlCon();
+      $x = $sqlcon->prepare("SELECT * FROM t_filmauffuerung WHERE ID = ?");
+      $mypar = $_GET["id"];
+      $x->bind_param("i", $mypar);
+      $x->execute();
+      $x->bind_result($ID, $FilmID, $SaalID, $AuffZeit);
+      $x->fetch();
+      $sqlcon->close();
+  }
+  else if(isset($_GET["delid"]) && isset($hid))
+  {
+      require_once("getSqlConnection.php");
+      $delId = $_GET["delid"];
+      $sqlcon = getSqlCon();
+      $x = $sqlcon->prepare("CALL p_DeletePerformance( ? )");
+      $x->bind_param("i", $delId);
+      $result = $x->execute();
+      $sqlcon->close();
+      redirect("/EditCinemahall.php?cid=$cid&id=$hid");
+  }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -59,10 +71,9 @@
     <link href="http://fonts.googleapis.com/css?family=Signika:300,600&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css" /><link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,800italic,800" rel="stylesheet" type="text/css" />
     <link href="Style/base.css" rel="stylesheet" type="text/css" />
     <script src="/Scripts/jquery.js" language="javascript"></script>
-    <script language="javascript" src="/Scripts/app.js"></script>
   <title>Star Movies</title>
 </head>
-<body onload="init()">
+<body>
 </div>
     <div class="header">
       <div class="page">
@@ -95,8 +106,9 @@
     <div class="page">
       <div class="main">
         <form id="performaceForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-          <input type="hidden" name="pid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
-          <input type="hidden" name="hid" value="<?PHP if(isset($_GET['hallid'])) echo $_GET['hallid'] ?>">
+          <input type="hidden" name="pid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id']; ?>">
+          <input type="hidden" name="hid" value="<?PHP echo $hid ?>">
+          <input type="hidden" name="cid" value="<?PHP echo $cid ?>">
           <table>
             <tbody>
           <tr>
@@ -142,7 +154,7 @@
                   <input class="submitbutton" type="submit" value="Speichern"/>
               </td>
               <td>
-                  <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/ManageOverview.php'" />
+                  <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/editCinemahall.php<?php echo "?cid＝" . $cid . "&id=" . $id ?>'" />
               </td>
           </tr>
       </tbody>
