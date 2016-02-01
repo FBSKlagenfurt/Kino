@@ -1,4 +1,5 @@
 <?php
+    //Hash password
 	function HashPassword($password)
 	{
 	    $cost = 15;

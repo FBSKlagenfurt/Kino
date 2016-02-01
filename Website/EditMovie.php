@@ -30,7 +30,7 @@
         $x->bind_param("isids", $myval, $myval1, $myval2, $myval3, $myval4);
         $result = $x->execute();
         $sqlcon->close();
-        redirect('/ManageOverview.php');
+        redirect('/Filmuebersicht.php');
     }
     //load data from id -> edit exist element
     else if(isset($_GET["id"]))
@@ -55,18 +55,44 @@
         $x->bind_param("i", $delId);
         $result = $x->execute();
         $sqlcon->close();
-        redirect('/ManageOverview.php');
+        redirect('/Filmuebersicht.php');
     }
 ?>
 <?php 
     //load HTML head
-    BuildPageHead(4,'',3);
+    BuildPageHead(4,'
+    <script>
+        function validateForm() {
+            var x = document.forms["MovieForm"]["Titel"].value;
+            var isValid = true;
+            if (x == null || x == "") {
+                isValid = false;
+            }
+            var myReg = new RegExp(/^\d{1,4}$/);
+            x = document.forms["MovieForm"]["Dauer"].value;
+            if (isValid && (x == null || x == "" || !myReg.test(x))) {
+                isValid = false;
+            }
+            myReg = new RegExp(/^\d{1,3}(\.\d{1,2})?$/);
+            x = document.forms["MovieForm"]["Preis"].value;
+            if (isValid && (x == null || x == "" || !myReg.test(x))) {
+                isValid = false;
+            }
+            if(!isValid)
+                $("#validateResult").show();
+            else
+                $("#validateResult").hide();
+            return isValid;
+        }
+    </script>
+    ',3);
     //Form for edit data + fill data for movie
 ?>
-            <form id="cinemaForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <form id="MovieForm" onsubmit="return validateForm()" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <input type="hidden" name="filmid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
             <table>
                 <tbody>
+                    <tr id="validateResult" style="display:none"><td colspan="2"><p style="color:red;">Bitte überprüfen Sie Ihren eingaben!</p></td></tr>
                     <tr>
                         <td colspan="2">
                             <h1 style="margin-left:auto;margin-right:auto;">Film Bearbeiten</h1>
@@ -101,7 +127,7 @@
                             <input class="submitbutton" type="submit" value="Speichern"/>
                         </td>
                         <td>
-                            <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/ManageOverview.php'" />
+                            <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/Filmuebersicht.php'" />
                         </td>
                     </tr>
                 </tbody>

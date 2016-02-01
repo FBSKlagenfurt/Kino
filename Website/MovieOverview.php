@@ -24,6 +24,7 @@
                 </thead>
                 <tbody>
                     <?php
+                         //Load Movie List
                          require_once("getSqlConnection.php");
                          $sqlcon = getSqlCon();
                          $x = $sqlcon->prepare("SELECT * FROM t_Film");

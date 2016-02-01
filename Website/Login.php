@@ -1,6 +1,7 @@
 <?php
     session_start();
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
+    //password checker
     function CheckPassword($username, $password){
         require_once("getSqlConnection.php");
         $dbh = getSqlCon();

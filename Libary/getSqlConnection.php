@@ -1,4 +1,5 @@
 <?php
+//Databse Connection creater
 function getSqlCon($host = "", $port = "", $socket = "", $user = "", $password = "", $dbname = ""){
     if ($host === "" && $port === "" && $socket === "" && $user === "" && $password === "" && $dbname === "")
     {

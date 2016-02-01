@@ -6,11 +6,19 @@
     
     //check for login
     $IsLoggedID = isManagerLoggedIn();
+    if(!$IsLoggedID)
+    {
+        session_start();
+        $_SESSION["ReturnUrl"] = "/ManageOverview.php";
+        redirect("/login.php");
+    }
 ?>
 <?php 
     //load HTML head
-    BuildPageHead(4,'',3)
-
+    BuildPageHead(4,'',3);
+    
+    
+    //load HTMLTable for movies
 ?>
          <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Filme<button onclick="location.href='/editMovie.php?id=$ID'">Hinzufügen</button></h1>
             <table class="table" style="margin-left:auto;margin-right:auto;">
@@ -32,6 +40,7 @@
                 </thead>
                 <tbody>
                     <?php
+                         //load entrys
                          require_once("getSqlConnection.php");
                          $sqlcon = getSqlCon();
                          $x = $sqlcon->prepare("SELECT * FROM t_Film");
@@ -47,5 +56,5 @@
             </table>            
 <?php 
     //load footer
-    BuildPageFoot() 
+    BuildPageFoot(); 
 ?>

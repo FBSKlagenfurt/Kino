@@ -3,6 +3,7 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php");
     require_once("base.php");
+    //check login state
     $IsLoggedID = isManagerLoggedIn();
     if(!$IsLoggedID)
     {
@@ -44,6 +45,7 @@
                 </thead>
                 <tbody>
                     <?php
+                         //Load Employee entrys
                          require_once("getSqlConnection.php");
                          $sqlcon = getSqlCon();
                          $x = $sqlcon->prepare("SELECT * FROM v_mitarbeiter");

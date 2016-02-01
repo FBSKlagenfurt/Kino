@@ -9,6 +9,7 @@
     </head>
     <body>
     	<?php
+            //initialize Amdmin User
             set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary"); 
             require_once("hash.php");
             require_once("getSqlConnection.php");

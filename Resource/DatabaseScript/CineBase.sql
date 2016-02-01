@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS KinoDaten 
 CHARACTER SET utf8
-COLLATE utf8_unicode_ci;
+COLLATE utf8_general_ci;
 
 USE KinoDaten;
 

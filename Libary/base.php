@@ -1,5 +1,5 @@
 <?php
-    
+    //login state functions;
     function isLoggedIn($ds = false){
         if(((!(!isset($_SESSION["LOGINUSER"]) || $_SESSION["LOGINUSER"] == NULL || !isset($_SESSION["LOGINTYP"]) || $_SESSION["LOGINTYP"] == NULL || !isset($_SESSION["LOGINTIME"]) || $_SESSION["LOGINTIME"] == NULL)) && ($_SESSION["LOGINTIME"] > strtotime("- 30 minutes"))))
         {
@@ -8,6 +8,7 @@
         }
         else
         {
+            //destroy session if desired
             if($ds === true)
                 session_destroy();
             return false;   
@@ -23,6 +24,8 @@
             return false;   
         }
     }
+    
+    
     //Baue HTML Kopf
     function BuildPageHead($menu, $headstrings = '', $submenu = 0){
         echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

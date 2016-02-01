@@ -3,6 +3,7 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php");
     require_once("base.php");
+    //check login state
     $IsLoggedID = isManagerLoggedIn();
     if(!$IsLoggedID)
     {
@@ -11,7 +12,7 @@
         redirect("/login.php");
     }
 ?>
-<?php BuildPageHead(4,'',1) ?>
+<?php BuildPageHead(4,'',1); ?>
          <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Kinos<button onclick="location.href='/editCinema.php'">Hinzufügen</button></h1>
             <table class="table" style="margin-left:auto;margin-right:auto;">
                 <thead>
@@ -35,6 +36,7 @@
                 </thead>
                 <tbody>
                     <?php
+                         //Load entrys
                          require_once("getSqlConnection.php");
                          $sqlcon = getSqlCon();
                          $x = $sqlcon->prepare("SELECT * FROM v_Kino");
@@ -49,4 +51,4 @@
                 </tbody>
             </table>
             
-<?php BuildPageFoot() ?>
+<?php BuildPageFoot(); ?>

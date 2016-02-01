@@ -23,7 +23,7 @@ DELIMITER $$
 CREATE PROCEDURE p_ManipulateCinema(IN kid BIGINT UNSIGNED, IN kn VARCHAR(100) , IN str VARCHAR(250), IN post VARCHAR(10), IN city VARCHAR(250), IN tel VARCHAR(25))
 BEGIN
 	DECLARE sid BIGINT UNSIGNED;
-	SELECT ID FROM t_Stadt WHERE t_Stadt.PLZ = post AND t_Stadt.Ort = city limit 1 INTO sid;
+	SELECT ID FROM t_Stadt WHERE t_Stadt.PLZ = post AND (t_Stadt.Ort = city OR t_Stadt.Ort LIKE concat(city,' %') OR t_Stadt.Ort LIKE concat(city,'-%')) limit 1 INTO sid;
     if(sid > 0) THEN
 		if kid <= 0 THEN 
 			INSERT INTO t_Kino(Kinoname, Strasse, StadtID, TelNr) values (kn, str,sid, tel);
@@ -32,7 +32,6 @@ BEGIN
 		END IF;
 	END IF;
 END $$
-
 DELIMITER ;
 
 
@@ -75,7 +74,7 @@ DELIMITER $$
 CREATE PROCEDURE p_ManipulateUser(IN uid BIGINT UNSIGNED, IN bn VARCHAR(30) , IN str VARCHAR(250), IN post VARCHAR(10), IN city VARCHAR(250), IN tid BIGINT unsigned, IN mail VARCHAR(100), IN vn VARCHAR(100),IN nn VARCHAR(100), IN pass VARCHAR (500))
 BEGIN
 	DECLARE sid BIGINT UNSIGNED;
-	SELECT ID FROM t_Stadt WHERE t_Stadt.PLZ = post AND t_Stadt.Ort = city limit 1 INTO sid;
+	SELECT ID FROM t_Stadt WHERE t_Stadt.PLZ = post AND (t_Stadt.Ort = city OR t_Stadt.Ort LIKE concat(city,' %') OR t_Stadt.Ort LIKE concat(city,'-%')) limit 1 INTO sid;
     if(sid > 0) THEN
 		if uid <= 0 THEN 
 			INSERT INTO t_User(Benutzername, Passwort, StadtID, TypID, Vorname, Nachname, MailAdresse, Strasse) values (bn, pass,sid, tid, vn, nn, mail, str);
@@ -146,41 +145,5 @@ DELIMITER $$
 CREATE PROCEDURE p_DeletePerformance(IN vid BIGINT UNSIGNED)
 BEGIN
 	DELETE FROM KinoDaten.t_filmauffuerung WHERE ID = vid;
-END $$
-DELIMITER ;
-
-
-DROP TRIGGER IF EXISTS tr_validatePerformanceTime_OnUpdate;
-DELIMITER $$
-CREATE TRIGGER tr_validatePerformanceTime_OnUpdate 
-    BEFORE UPDATE ON t_FilmAuffuerung
-    FOR EACH ROW 
-BEGIN
-    IF 0 > 1 THEN 
-		 SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot add or update row: Hall is reserved for selected time!';
-	END IF;
-END$$
-DELIMITER ;
-DROP TRIGGER IF EXISTS tr_validatePerformanceTime_OnInsert;
-DELIMITER $$
-CREATE TRIGGER tr_validatePerformanceTime_OnInsert 
-    BEFORE INSERT ON t_FilmAuffuerung
-    FOR EACH ROW 
-BEGIN
-    IF 0 > 1 THEN 
-		 SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot add or update row: Hall is reserved for selected time!';
-	END IF;
-END$$
-DELIMITER ;
-
-DROP PROCEDURE IF EXISTS p_ValidatePerformanceTime;
-
-DELIMITER $$
-CREATE PROCEDURE p_ValidatePerformanceTime(IN sid BIGINT UNSIGNED, IN fid BIGINT UNSIGNED,IN vorzeit Datetime, OUT IsValid BOOLEAN)
-BEGIN
-	DECLARE dur INT UNSIGNED;
-    SET dur = (SELECT dauer FROM t_Film WHERE ID=fid LIMIT 1);
-	(SELECT COUNT(ID) FROM t_FilmAuffuerung WHERE SaalID = sid AND Auffzeit BETWEEN vorzeit AND (vorzeit + INTERVAL (dur + 130) MINUTE));
-    SET IsValid = (SELECT COUNT(ID) FROM t_FilmAuffuerung WHERE SaalID = sid AND Auffzeit BETWEEN vorzeit AND (vorzeit + INTERVAL (dur + 130) MINUTE)) < 1;
 END $$
 DELIMITER ;

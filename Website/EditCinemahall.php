@@ -3,13 +3,12 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
     require_once("base.php");
-    
-    //check for login manager/user
-    $IsLoggedID = isManagerLoggedIn();
     if(isset($_GET["cid"]))
     {
         $cid = $_GET["cid"];
     }
+    //check loginstate
+    $IsLoggedID = isManagerLoggedIn();
     if(!$IsLoggedID)
     {
         $_SESSION["ReturnUrl"] = "/ManageOverview.php";
@@ -72,14 +71,41 @@
 ?>
 <?php 
     //load HTML head
-    BuildPageHead(4,'',1);
+    BuildPageHead(4,'
+    <script>
+        function validateForm() {
+            var x = document.forms["HallForm"]["Name"].value;
+            var isValid = true;
+            var myReg = new RegExp(/^[A-Za-z1-9\-_. öäüßÖÄÜ]+$/);
+            if (x == null || x == "" || !myReg.test(x)) {
+                isValid = false;
+            }
+            myReg = new RegExp(/^[0-9]{1,3}$/);
+            x = document.forms["HallForm"]["Rows"].value;
+            if (isValid && (x == null || x == "" || !myReg.test(x))) {
+                isValid = false;
+            }
+            myReg = new RegExp(/^[0-9]{1,4}$/);
+            x = document.forms["HallForm"]["Seats"].value;
+            if (isValid && (x == null || x == "" || !myReg.test(x))) {
+                isValid = false;
+            }
+            if(!isValid)
+                $("#validateResult").show();
+            else
+                $("#validateResult").hide();
+            return isValid;
+        }
+    </script>
+    ',1);
     //form for edit data + fill data for cinema hall and performace
 ?>
-            <form id="cinemaForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+            <form id="HallForm" onsubmit="return validateForm()" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <input type="hidden" name="HallID" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
             <input type="hidden" name="CineID" value="<?PHP echo $cid; ?>">
             <table>
                 <tbody>
+                    <tr id="validateResult" style="display:none"><td colspan="2"><p style="color:red;">Bitte überprüfen Sie Ihren eingaben!</p></td></tr>
                     <tr>
                         <td colspan="2">
                             <h1 style="margin-left:auto;margin-right:auto;">Saal Bearbeiten</h1>
