@@ -2,6 +2,7 @@
   session_start();
   set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
   require_once("general.php"); 
+  require_once("base.php");
   $IsLoggedID = isManagerLoggedIn();
   if(isset($_GET["hid"]))
   {
@@ -17,7 +18,7 @@
       $_SESSION["ReturnUrl"] = "/ManageOverview.php";
       redirect("/login.php");
   }
-  else if(isset($_POST["hid"]) && isset($_POST["Titel"]) && isset($_POST["BeginntUm"]) && isset($_POST["cid"]))
+  else if(isset($_POST["hid"]) && isset($_POST["Titel"]) && isset($_POST["BeginnDate"]) && isset($_POST["BeginnTime"]) && isset($_POST["cid"]))
   {
       require_once("getSqlConnection.php");
       if(isset($_POST["pid"]))
@@ -26,7 +27,7 @@
           $myval = 0;
       $hid = $_POST["hid"];
       $myval1 = $_POST["Titel"];
-      $myval2 = $_POST["BeginntUm"];
+      $myval2 = $_POST['BeginnDate'] . " " . $_POST['BeginnTime'];
       $cid = $_POST["cid"];
       require_once("getSqlConnection.php");
       $sqlcon = getSqlCon();
@@ -51,6 +52,7 @@
       $x->bind_result($ID, $FilmID, $SaalID, $AuffZeit);
       $x->fetch();
       $sqlcon->close();
+      $datetime = explode(" ", $AuffZeit);
   }
   else if(isset($_GET["delid"]) && isset($hid))
   {
@@ -64,47 +66,16 @@
       redirect("/EditCinemahall.php?cid=$cid&id=$hid");
   }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="http://fonts.googleapis.com/css?family=Signika:300,600&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css" /><link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,800italic,800" rel="stylesheet" type="text/css" />
-    <link href="Style/base.css" rel="stylesheet" type="text/css" />
-    <script src="/Scripts/jquery.js" language="javascript"></script>
-  <title>Star Movies</title>
-</head>
-<body>
-</div>
-    <div class="header">
-      <div class="page">
-         <div class="title">
-            <a href="/"><img src="/Images/title.png" alt="Star Movies Logo" width="200px" height="100px" /></a>
-         </div>
-         <div class="menu">
-                <div class="topmenu">
-                    <a href="/Login.php"><img src="/Images/login.png" style="vertical-align:middle"; width="24px" height="24px" /><span style="line-height:24px; vertical-align:middle; font-size:15px;"><?php if($IsLoggedID)echo "Abmelden"; else echo "Anmelden";?></span></a>
-                </div>
-                <div class="clear"></div>
-                <div class="mainmenu">
-                    <div class="menuentry">
-                        <a href="/">Start</a>
-                    </div>
-                    <div class="menuentry">
-                        <a href="MovieOverview.php">Filme</a>
-                    </div>
-                    <div class="menuentry">
-                        <a href="CinemaOverview.php">Kinos</a>
-                    </div>
-                    <?php if($IsLoggedID) echo ' 
-                    <div class="selmenuentry">
-                        <a href="/ManageOverview.php">Verwaltung</a>
-                    </div>' ?>
-                </div>
-         </div>
-      </div>
-    </div>
-    <div class="page">
-      <div class="main">
+<?php BuildPageHead(4,'<link rel="stylesheet" href="/scripts/jqueryui/jquery-ui.min.css">
+<script src="/scripts/jqueryui/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#BeginnDate").datepicker();
+        $("#BeginnDate").datepicker("option", "dateFormat", "yy-mm-dd" );
+        $("#BeginnDate").datepicker("setDate", new Date("' .$datetime[0]. '"));
+    });
+</script>'
+,1) ?>
         <form id="performaceForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
           <input type="hidden" name="pid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id']; ?>">
           <input type="hidden" name="hid" value="<?PHP echo $hid ?>">
@@ -125,12 +96,12 @@
                       $sqlcon = getSqlCon();
                       $x = $sqlcon->prepare("SELECT id, Titel FROM t_film;");
                       $x->execute();
-                      $x->bind_result($id,$Titel);
+                      $x->bind_result($fid,$Titel);
                       echo "<select name='Titel' id='FiNa'>";
                       while($x->fetch())
                       {
                        
-                          echo "<option value='".$id."'>".$Titel."</option>";   
+                          echo "<option " .((isset($_GET["id"]) && $FilmID == $fid) ? "selected" : ''). " value='".$fid."'>".$Titel."</option>";   
 
                       }
                       echo "</select>";
@@ -141,12 +112,17 @@
           
 
             <tr>
-              <td>Beginnt um:</td>
+              <td>Datum:</td>
               <td>
-                <input type="text" id="BeginntUm" name="BeginntUm" value="<?php if(isset($_GET["id"])) echo $AuffZeit ?>"/>
+                <input type="text" id="BeginnDate" name="BeginnDate" value="<?php if(isset($_GET["id"])) echo $datetime[0] ?>"/>
               </td>
             </tr>
-
+            <tr>
+              <td>Zeit:</td>
+              <td>
+                <input type="text" id="BeginnTime" name="BeginnTime" value="<?php if(isset($_GET["id"])) echo $datetime[1] ?>"/>
+              </td>
+            </tr>
 
          
           <tr>
@@ -154,45 +130,10 @@
                   <input class="submitbutton" type="submit" value="Speichern"/>
               </td>
               <td>
-                  <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/editCinemahall.php<?php echo "?cid＝" . $cid . "&id=" . $id ?>'" />
+                  <input class="submitbutton" type="button" value="Abbrechen" onclick="location.href='/editCinemahall.php<?php echo "?cid＝" . $cid . "&id=" . $hid ?>'" />
               </td>
           </tr>
       </tbody>
   </table>
 </form>
-        </div>
-        <div class="clear">
-        </div>
-    </div>
-    <div class="clear"></div>
-    <br /><br /><br />
-    <div class="footer">
-      <div class="page">
-        <div class="col1">
-            <b>Ticket Reservieren</b><br /><br />
-            <a href="/login.php">Login</a><br />
-            <a href="/">FAQ</a>
-        </div>
-        <div class="col2">
-            <b>FILME</b><br /><br />
-            <a href="/">Jetzt im Kino</a><br />
-            <a href="/">Bald im Kino</a><br />
-            <a href="/">IMAX</a><br />
-            <a href="/">Trailer</a><br />
-            <br />
-            <b><a href="/Impressum.aspx">IMPRESSUM</a></b><br /><br />
-            <b><a href="../Images/AGB.pdf" target="_blank">AGB</a></b><br />
-        </div>
-        <div class="col3">
-            <b>KONTAKT</b><br /><br />
-            Star Movies GmbH<br />
-            Justastreet 1<br />
-            A-9500 Villach<br />
-            +43 4242 12345 Fax: DW-99<br />
-            office@starmovies.test<br />
-        </div>
-      </div>
-    </div>
-    </form>
-</body>
-</html>
+<?php BuildPageFoot() ?>
