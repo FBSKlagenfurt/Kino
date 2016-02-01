@@ -4,7 +4,12 @@
     require_once("general.php");
     require_once("base.php");
 ?>
-<?php BuildPageHead(3) ?>  
+<?php 
+    //load HTML head
+    BuildPageHead(3);
+    //table cinema overview 
+?>  
+
            <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Kinos</h1> 
            <table class="table" style="margin-left:auto;margin-right:auto;">
                 <thead>
@@ -27,7 +32,7 @@
                 </thead>
                 <tbody>
                     <?php 
-                    
+                        //tabele cinema overview
 					     require_once("getSqlConnection.php");
 					     $sqlcon = getSqlCon();
                          $x = $sqlcon->prepare("SELECT * FROM v_Kino");
@@ -41,4 +46,7 @@
 					?>
                 </tbody>
             </table>
-<?php BuildPageFoot() ?>
+<?php 
+    //load footer
+    BuildPageFoot(); 
+?>

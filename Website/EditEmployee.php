@@ -4,7 +4,7 @@
     require_once("general.php"); 
     require_once("base.php");
     
-    //chekc for login
+    //check for login
     $IsLoggedID = isManagerLoggedIn();
     if(!$IsLoggedID)
     {
@@ -12,7 +12,7 @@
         $_SESSION["ReturnUrl"] = "/ManageOverview.php";
         redirect("/login.php");
     }
-    //Handle Postback
+    //handle postback
     else if(isset($_POST["Vorname"]) && isset($_POST["Nachname"]) && isset($_POST["Benutzername"]) && isset($_POST["E-Mail"]) && isset($_POST["Strasse"]) && isset($_POST["PLZ"]) && isset($_POST["Ort"]) && isset($_POST["Typ"]))
     {
         require_once("getSqlConnection.php");
@@ -41,7 +41,7 @@
         $sqlcon->close();
         redirect('/ManageOverview.php');
     }
-    //Load data from id -> Edit exist element
+    //load data from id -> edit exist element
     else if(isset($_GET["id"]))
     {
         require_once("getSqlConnection.php");
@@ -54,7 +54,7 @@
         $x->fetch();
         $sqlcon->close();
     }
-    //Delete process
+    //delete process
     else if(isset($_GET["delid"]))
     {
         require_once("getSqlConnection.php");
@@ -69,9 +69,9 @@
 ?>
 
 <?php
-    //Load HTML head 
+    //load HTML head 
     BuildPageHead(4,'',2);
-    //Form for edit data + Fill data 
+    //form for edit data + fill data for user
 ?>
             <form id="cinemaForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <input type="hidden" name="mid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
@@ -170,4 +170,7 @@
                     </tr>
                 </tbody>
             </table>
-<?php BuildPageFoot(); //Load Footer ?>
+<?php 
+    //load footer
+    BuildPageFoot();  
+?>

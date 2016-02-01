@@ -3,6 +3,8 @@
   set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
   require_once("general.php"); 
   require_once("base.php");
+  
+  //check for login
   $IsLoggedID = isManagerLoggedIn();
   if(isset($_GET["hid"]))
   {
@@ -18,6 +20,7 @@
       $_SESSION["ReturnUrl"] = "/ManageOverview.php";
       redirect("/login.php");
   }
+  //handle postback
   else if(isset($_POST["hid"]) && isset($_POST["Titel"]) && isset($_POST["BeginnDate"]) && isset($_POST["BeginnTime"]) && isset($_POST["cid"]))
   {
       require_once("getSqlConnection.php");
@@ -37,10 +40,12 @@
       $sqlcon->close();
       redirect("/EditCinemahall.php?cid=$cid&id=$hid");
   }
+  //parameter validation
   else if(!isset($hid) && !isset($cid) && isset($_GET["delid"]))
   {    
       redirect('/ManageOverview.php');
   }
+  //load data from id -> edit exist element
   else if(isset($_GET["id"]))
   {
       require_once("getSqlConnection.php");
@@ -54,6 +59,7 @@
       $sqlcon->close();
       $datetime = explode(" ", $AuffZeit);
   }
+  //delete performace
   else if(isset($_GET["delid"]) && isset($hid))
   {
       require_once("getSqlConnection.php");
@@ -66,16 +72,20 @@
       redirect("/EditCinemahall.php?cid=$cid&id=$hid");
   }
 ?>
-<?php BuildPageHead(4,'<link rel="stylesheet" href="/scripts/jqueryui/jquery-ui.min.css">
-<script src="/scripts/jqueryui/jquery-ui.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $("#BeginnDate").datepicker();
-        $("#BeginnDate").datepicker("option", "dateFormat", "yy-mm-dd" );
-        $("#BeginnDate").datepicker("setDate", new Date("' .$datetime[0]. '"));
-    });
-</script>'
-,1) ?>
+<?php 
+  //load HTML head and timehandle 
+  BuildPageHead(4,'<link rel="stylesheet" href="/scripts/jqueryui/jquery-ui.min.css">
+    <script src="/scripts/jqueryui/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#BeginnDate").datepicker();
+            $("#BeginnDate").datepicker("option", "dateFormat", "yy-mm-dd" );
+            $("#BeginnDate").datepicker("setDate", new Date("' .$datetime[0]. '"));
+        });
+    </script>'
+  ,1);
+  //form for edit data + fill data for performance 
+?>
         <form id="performaceForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
           <input type="hidden" name="pid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id']; ?>">
           <input type="hidden" name="hid" value="<?PHP echo $hid ?>">
@@ -136,4 +146,7 @@
       </tbody>
   </table>
 </form>
-<?php BuildPageFoot() ?>
+<?php 
+  //load footer 
+  BuildPageFoot() 
+?>

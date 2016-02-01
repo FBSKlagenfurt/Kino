@@ -3,6 +3,8 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
     require_once("base.php");
+    
+    //check for login
     $IsLoggedID = isManagerLoggedIn();
     if(!$IsLoggedID)
     {
@@ -10,6 +12,7 @@
         $_SESSION["ReturnUrl"] = "/ManageOverview.php";
         redirect("/login.php");
     }
+    //handle postback cinema
     else if(isset($_POST["Kinoname"]) && isset($_POST["Str"]) && isset($_POST["PLZ"]) && isset($_POST["Ort"]))
     {
         require_once("getSqlConnection.php");
@@ -30,6 +33,7 @@
         $sqlcon->close();
         redirect('/ManageOverview.php');
     }
+    //load data from id -> edit exist element
     else if(isset($_GET["id"]))
     {
         $cid = $_GET["id"];
@@ -43,6 +47,7 @@
         $x->fetch();
         $sqlcon->close();
     }
+    //delete cinema
     else if(isset($_GET["delid"]))
     {
         require_once("getSqlConnection.php");
@@ -55,7 +60,11 @@
         redirect('/ManageOverview.php');
     }
 ?>
-<?php BuildPageHead(4,'',1) ?> 
+<?php 
+    //load HTML head
+    BuildPageHead(4,'',1); 
+    //form for edit data + fill data for cinema
+?> 
             <form id="cinemaForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <input type="hidden" name="cineid" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
             <table>
@@ -137,4 +146,7 @@
                    
                 echo '</tbody>
             </table>';} ?>
-<?php BuildPageFoot() ?>
+<?php 
+    //load footer
+    BuildPageFoot(); 
+?>

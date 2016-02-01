@@ -3,6 +3,8 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"]. "/../" ."/libary");
     require_once("general.php"); 
     require_once("base.php");
+    
+    //check for login manager/user
     $IsLoggedID = isManagerLoggedIn();
     if(isset($_GET["cid"]))
     {
@@ -13,6 +15,7 @@
         $_SESSION["ReturnUrl"] = "/ManageOverview.php";
         redirect("/login.php");
     }
+    //handle postback cinema hall
     else if(isset($_POST["Name"]) && isset($_POST["Rows"]) && isset($_POST["Seats"]))
     {
         require_once("getSqlConnection.php");
@@ -36,10 +39,12 @@
         }
         redirect('/EditCinema.php?id='. $myval4);
     }
+    //parameter validation
     else if(!isset($cid) && isset($_GET["delid"]))
     {    
         redirect('/ManageOverview.php');
     }
+    //load data from id -> edit exist element
     else if(isset($_GET["id"]))
     {
         require_once("getSqlConnection.php");
@@ -52,6 +57,7 @@
         $x->fetch();
         $sqlcon->close();
     }
+    //delete cinema hall
     else if(isset($_GET["delid"]) && isset($cid))
     {
         require_once("getSqlConnection.php");
@@ -64,7 +70,11 @@
         redirect('/EditCinema.php?id='. $cid);
     }
 ?>
-<?php BuildPageHead(4,'',1) ?>
+<?php 
+    //load HTML head
+    BuildPageHead(4,'',1);
+    //form for edit data + fill data for cinema hall and performace
+?>
             <form id="cinemaForm" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <input type="hidden" name="HallID" value="<?PHP if(isset($_GET['id'])) echo $_GET['id'] ?>">
             <input type="hidden" name="CineID" value="<?PHP echo $cid; ?>">
@@ -103,8 +113,6 @@
                     </tr>
                 </tbody>
             </table>
-
-
 
 
             <h1 style="margin-left:auto;margin-right:auto;text-align:center;">Vorstellungen<button type="button" onclick="location.href='/editPerformance.php?hid=<?php echo $_GET['id'] ."&cid=". $cid ?>'">Hinzufügen</button></h1>
@@ -149,4 +157,7 @@
                     ?>
                 </tbody>
             </table>
-<?php BuildPageFoot() ?>
+<?php 
+    //load footer
+    BuildPageFoot(); 
+?>
