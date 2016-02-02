@@ -83,7 +83,7 @@
         $(document).ready(function(){
             $("#BeginnDate").datepicker();
             $("#BeginnDate").datepicker("option", "dateFormat", "yy-mm-dd" );
-            $("#BeginnDate").datepicker("setDate", new Date("' .$datetime[0]. '"));
+            $("#BeginnDate").datepicker("setDate", new Date("' . (isset($_GET["id"]) ? $datetime[0] : '') . '"));
         });
         function validateForm() {
             var isValid = true;
