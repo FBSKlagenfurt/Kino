@@ -60,6 +60,9 @@
 ?>
 <?php 
     //load HTML head
+    //Validators for dauer -> number with 1 -4 digits
+    //               Titel -> not null or empty
+    //               Preis -> float 1-3.1-2 digits
     BuildPageHead(4,'
     <script>
         function validateForm() {

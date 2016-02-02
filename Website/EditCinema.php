@@ -62,16 +62,21 @@
 ?>
 <?php 
     //load HTML head
+    //Validators for Name -> Alphanueric with German characters and '-', '_', ' ', '.'
+    //               Tel  -> 9 - 15 digits starts with + or 0 can contain '-', ' '
+    //               Str(Streasse)  -> Alphanueric with German characters and '-', '_', ' ', '.'
+    //               PLZ  -> NUMERIC 4 DIGITS
+    //               Ort  -> ASCI letter + German letter + ' ' + '-' 
     BuildPageHead(4,'
     <script>
         function validateForm() {
             var x = document.forms["cinemaForm"]["Kinoname"].value;
             var isValid = true;
-            var myReg = new RegExp(/^[A-Za-z1-9\-_. öäüßÖÄÜ]+$/);
+            var myReg = new RegExp(/^[A-Za-z1-9\-_\. öäüßÖÄÜ]+$/);
             if (x == null || x == "" || !myReg.test(x)) {
                 isValid = false;
             }
-            myReg = new RegExp(/^[0-9\-\+]{9,15}$/);
+            myReg = new RegExp(/^\+|0[0-9\- ]{9,15}$/);
             x = document.forms["cinemaForm"]["Tel"].value;
             if (isValid && (x == null || x == "" || !myReg.test(x))) {
                 isValid = false;

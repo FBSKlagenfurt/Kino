@@ -70,16 +70,27 @@
 
 <?php
     //load HTML head 
+    //load HTML head
+    //Validators for Benutzername -> alphanumeric + '-' + '_'
+    //               Passwort -> empty will leave old password 
+    //                        -> valid when legth > 8 and <32 
+    //                               a least 1 uppercase 1 lowercase 1 number and 1 of !{}@#$%^&+= character 
+    //                               only those are valid characters
+    //               Streasse  -> Alphanueric with German characters and '-', '_', ' ', '.'
+    //               PLZ  -> NUMERIC 4 DIGITS
+    //               Ort  -> ASCI letter + German letter + ' ' + '-'
+    //               Nachname  -> ASCI letter + German letter + ' '
+    //               Vorname  -> ASCI letter + German letter + ' '
     BuildPageHead(4,'
     <script>
         function validateForm() {
-            var myReg = new RegExp(/^[A-Za-z1-9\-_.]+$/);
+            var myReg = new RegExp(/^[A-Za-z1-9\-_]+$/);
             var x = document.forms["empForm"]["Benutzername"].value;
             var isValid = true;
             if (x == null || x == "" || !myReg.test(x)) {
                 isValid = false;
             }
-            myReg = new RegExp(/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!\{\}@#$%^&+=]).*$/);
+            myReg = new RegExp(/^(?=.{8,32})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!\{\}@#$%^&+=]).*$/);
             x = document.forms["empForm"]["Passwort"].value;
             if (isValid && ((x != null && x != "" && !myReg.test(x)) || x != document.forms["empForm"]["PWRep"].value)) {
                 isValid = false;

@@ -74,7 +74,9 @@
   }
 ?>
 <?php 
-  //load HTML head and timehandle 
+  //load HTML head and timehandle
+  //Datepicker
+  //Validator for BeginnTime -> hh:mm format
   BuildPageHead(4,'<link rel="stylesheet" href="/scripts/jqueryui/jquery-ui.min.css">
     <script src="/scripts/jqueryui/jquery-ui.min.js"></script>
     <script>

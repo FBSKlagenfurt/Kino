@@ -71,12 +71,15 @@
 ?>
 <?php 
     //load HTML head
+    //Validators for Name -> Alphanueric with German characters and '-', '_', ' ', '.'
+    //               Row  -> Nummeric 1- 3 digits
+    //               Row  -> Nummeric 1- 4 digits
     BuildPageHead(4,'
     <script>
         function validateForm() {
             var x = document.forms["HallForm"]["Name"].value;
             var isValid = true;
-            var myReg = new RegExp(/^[A-Za-z1-9\-_. öäüßÖÄÜ]+$/);
+            var myReg = new RegExp(/^[A-Za-z1-9\-_\. öäüßÖÄÜ]+$/);
             if (x == null || x == "" || !myReg.test(x)) {
                 isValid = false;
             }
